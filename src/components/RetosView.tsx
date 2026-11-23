@@ -103,13 +103,13 @@ export const RetosView: React.FC<RetosViewProps> = ({
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12 space-y-8">
       {/* Introducción breve */}
       <section className="space-y-3 max-w-3xl">
-        <p className="text-xs font-mono font-semibold uppercase tracking-wider text-slate-500">
+        <p className="text-xs font-mono font-semibold uppercase tracking-wider text-[#2D6CDF]">
           Retos profesionales · Simulación práctica
         </p>
-        <h1 className="font-serif text-3xl sm:text-4xl font-semibold text-[#0F172A] tracking-tight leading-tight">
+        <h1 className="font-sans text-3xl sm:text-4xl font-bold text-[#0F172A] tracking-tight leading-tight">
           Elige un reto y pon a prueba tu criterio
         </h1>
-        <p className="text-base text-slate-600 leading-relaxed">
+        <p className="text-base text-[#475569] leading-relaxed">
           Al elegir un reto, asumirás un rol dentro de una empresa y enfrentarás un problema real según la carrera que seleccionaste y el nivel profesional.
         </p>
       </section>
@@ -117,7 +117,7 @@ export const RetosView: React.FC<RetosViewProps> = ({
       {/* Filtro por carrera */}
       <section
         aria-label="Filtrar retos por carrera"
-        className="bg-white p-3 rounded-2xl border border-[#E5E7EB]"
+        className="bg-white p-3 rounded-2xl border border-[#E2E8F0]"
       >
         <div className="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0">
           <button
@@ -126,8 +126,8 @@ export const RetosView: React.FC<RetosViewProps> = ({
             aria-pressed={carreraFiltroId === 'todas'}
             className={`px-3.5 py-2 rounded-xl text-xs font-semibold transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
               carreraFiltroId === 'todas'
-                ? 'bg-[#16263B] text-white'
-                : 'bg-[#F9F8F6] text-slate-600 hover:bg-[#EFECE6] hover:text-[#0F172A]'
+                ? 'bg-[#2D6CDF] text-white'
+                : 'bg-[#F8FAFC] text-[#475569] hover:bg-[#EFF6FF] hover:text-[#2D6CDF]'
             }`}
           >
             Todas
@@ -143,8 +143,8 @@ export const RetosView: React.FC<RetosViewProps> = ({
                 aria-pressed={activo}
                 className={`px-3.5 py-2 rounded-xl text-xs font-semibold transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
                   activo
-                    ? 'bg-[#16263B] text-white'
-                    : 'bg-[#F9F8F6] text-slate-600 hover:bg-[#EFECE6] hover:text-[#0F172A]'
+                    ? 'bg-[#2D6CDF] text-white'
+                    : 'bg-[#F8FAFC] text-[#475569] hover:bg-[#EFF6FF] hover:text-[#2D6CDF]'
                 }`}
               >
                 {carrera.titulo}
@@ -160,16 +160,16 @@ export const RetosView: React.FC<RetosViewProps> = ({
           <section
             key={carrera.id}
             aria-labelledby={`seccion-carrera-${carrera.id}`}
-            className="bg-white rounded-2xl border border-[#E5E7EB] p-6 sm:p-8 space-y-6"
+            className="bg-white rounded-2xl border border-[#E2E8F0] p-6 sm:p-8 space-y-6"
           >
-            <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-[#E5E7EB]">
+            <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-[#E2E8F0]">
               <div className="space-y-1">
-                <p className="text-xs font-mono font-semibold uppercase tracking-wider text-slate-500">
+                <p className="text-xs font-mono font-semibold uppercase tracking-wider text-[#64748B]">
                   {carrera.area}
                 </p>
                 <h2
                   id={`seccion-carrera-${carrera.id}`}
-                  className="font-serif text-xl sm:text-2xl font-semibold text-[#0F172A]"
+                  className="font-sans text-xl sm:text-2xl font-bold text-[#0F172A]"
                 >
                   {carrera.titulo}
                 </h2>
@@ -181,8 +181,8 @@ export const RetosView: React.FC<RetosViewProps> = ({
                   Reto disponible
                 </span>
               ) : (
-                <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 bg-[#EFECE6] border border-[#E5E7EB] px-3 py-1 rounded-xl">
-                  <Clock className="w-3.5 h-3.5 text-slate-500" />
+                <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#475569] bg-[#F1F5F9] border border-[#E2E8F0] px-3 py-1 rounded-xl">
+                  <Clock className="w-3.5 h-3.5 text-[#64748B]" />
                   Próximamente
                 </span>
               )}
@@ -194,33 +194,33 @@ export const RetosView: React.FC<RetosViewProps> = ({
                   key={reto.id}
                   className={`flex flex-col justify-between rounded-2xl border p-5 sm:p-6 space-y-5 transition-all ${
                     reto.disponible
-                      ? 'bg-[#F9F8F6] border-[#16263B]/25 shadow-xs'
-                      : 'bg-[#F9F8F6]/70 border-[#E5E7EB]'
+                      ? 'bg-[#F8FAFC] border-[#2D6CDF]/30 shadow-xs'
+                      : 'bg-[#F8FAFC]/70 border-[#E2E8F0]'
                   }`}
                 >
                   <div className="space-y-3">
                     {/* 1. Carrera y nivel */}
-                    <p className="text-xs font-medium text-slate-600 leading-snug">
+                    <p className="text-xs font-medium text-[#475569] leading-snug">
                       {reto.carreraTitulo} ·{' '}
                       <span className="font-mono text-[#0F172A]">{reto.nivelLabel}</span>
                     </p>
 
                     {/* 2. Título del reto */}
-                    <h3 className="font-serif text-xl font-semibold text-[#0F172A] leading-snug">
+                    <h3 className="font-sans text-xl font-bold text-[#0F172A] leading-snug">
                       {reto.titulo}
                     </h3>
 
                     {/* 3. Descripción breve (1–2 líneas) */}
-                    <p className="text-sm text-slate-600 leading-relaxed line-clamp-3">
+                    <p className="text-sm text-[#475569] leading-relaxed line-clamp-3">
                       {reto.descripcion}
                     </p>
                   </div>
 
-                  <div className="space-y-4 pt-3 border-t border-[#E5E7EB]">
+                  <div className="space-y-4 pt-3 border-t border-[#E2E8F0]">
                     {/* 4. Duración estimada y estado */}
                     <div className="flex items-center justify-between gap-2">
-                      <span className="inline-flex items-center gap-1.5 text-xs font-mono text-slate-600">
-                        <Clock className="w-3.5 h-3.5 text-[#16263B]" />
+                      <span className="inline-flex items-center gap-1.5 text-xs font-mono text-[#475569]">
+                        <Clock className="w-3.5 h-3.5 text-[#2D6CDF]" />
                         {reto.duracion}
                       </span>
 
@@ -229,7 +229,7 @@ export const RetosView: React.FC<RetosViewProps> = ({
                           Disponible
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1 text-xs font-semibold text-slate-600 bg-[#EFECE6] border border-[#E5E7EB] px-2.5 py-0.5 rounded-lg">
+                        <span className="inline-flex items-center gap-1 text-xs font-semibold text-[#475569] bg-[#F1F5F9] border border-[#E2E8F0] px-2.5 py-0.5 rounded-lg">
                           Próximamente
                         </span>
                       )}
@@ -240,7 +240,7 @@ export const RetosView: React.FC<RetosViewProps> = ({
                       <button
                         type="button"
                         onClick={() => onEntrarReto(reto.retoId!)}
-                        className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold bg-[#16263B] text-white hover:bg-[#0F172A] transition-colors cursor-pointer whitespace-nowrap"
+                        className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold bg-[#2D6CDF] text-white hover:bg-[#1D4ED8] transition-colors cursor-pointer whitespace-nowrap"
                       >
                         {tieneProgresoActivo ? 'Continuar reto' : 'Iniciar reto'}
                         <ArrowRight className="w-4 h-4" />

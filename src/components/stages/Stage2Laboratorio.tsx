@@ -107,13 +107,13 @@ export const Stage2Laboratorio: React.FC<Stage2LaboratorioProps> = ({
   return (
     <div className="space-y-8">
       <header className="space-y-2.5">
-        <p className="text-xs font-medium text-slate-500">
+        <p className="text-xs font-medium text-[#64748B]">
           Parte 2 · Pistas del sistema y decisiones paso a paso
         </p>
-        <h1 className="font-serif text-3xl sm:text-4xl font-semibold text-[#0F172A]">
+        <h1 className="font-sans text-3xl sm:text-4xl font-bold text-[#0F172A] tracking-tight">
           Revisa las pistas reales y decide qué hacer
         </h1>
-        <p className="text-base text-slate-700 leading-relaxed max-w-3xl">
+        <p className="text-base text-[#475569] leading-relaxed max-w-3xl">
           Mira en la gráfica cómo subió la espera a las 08:00 a.m. y compara las acciones de abajo para descubrir qué saturó las 100{' '}
           <TerminoTecnico palabra="Connection Pool" etiqueta="ventanillas" />. Si quieres ver cómo lucen estas herramientas en una empresa real, abre los botones{' '}
           <strong className="text-[#0F172A]">(+)</strong>.
@@ -165,7 +165,7 @@ export const Stage2Laboratorio: React.FC<Stage2LaboratorioProps> = ({
               <button
                 type="button"
                 onClick={() => setHerramientaModal(reto.herramientasReales.grafana)}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-[#16263B] text-white border border-sky-400/40 hover:bg-sky-900/70 transition-colors whitespace-nowrap"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-[#1E293B] text-white border border-sky-400/40 hover:bg-[#2D6CDF]/30 transition-colors whitespace-nowrap"
                 title="Abrir detalle de Grafana"
               >
                 <span className="w-4 h-4 rounded-full bg-sky-400 text-[#0F172A] inline-flex items-center justify-center font-bold">
@@ -176,10 +176,10 @@ export const Stage2Laboratorio: React.FC<Stage2LaboratorioProps> = ({
               <button
                 type="button"
                 onClick={() => setHerramientaModal(reto.herramientasReales.datadog)}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-[#16263B] text-white border border-purple-400/40 hover:bg-purple-900/60 transition-colors whitespace-nowrap"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-[#1E293B] text-white border border-blue-400/40 hover:bg-[#2D6CDF]/30 transition-colors whitespace-nowrap"
                 title="Abrir detalle de Datadog APM"
               >
-                <span className="w-4 h-4 rounded-full bg-purple-400 text-[#0F172A] inline-flex items-center justify-center font-bold">
+                <span className="w-4 h-4 rounded-full bg-[#38BDF8] text-[#0F172A] inline-flex items-center justify-center font-bold">
                   <Plus className="w-3 h-3" />
                 </span>
                 Datadog APM
@@ -286,7 +286,7 @@ export const Stage2Laboratorio: React.FC<Stage2LaboratorioProps> = ({
               <button
                 type="button"
                 onClick={() => setHerramientaModal(reto.herramientasReales['postgres-slow-log'])}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-[#16263B] text-white border border-amber-400/40 hover:bg-amber-900/40 transition-colors whitespace-nowrap"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-[#1E293B] text-white border border-amber-400/40 hover:bg-amber-900/40 transition-colors whitespace-nowrap"
               >
                 <span className="w-4 h-4 rounded-full bg-amber-400 text-[#0F172A] inline-flex items-center justify-center font-bold">
                   <Plus className="w-3 h-3" />
@@ -446,14 +446,14 @@ export const Stage2Laboratorio: React.FC<Stage2LaboratorioProps> = ({
       <section className="space-y-6">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <div>
-            <h2 className="font-serif text-2xl font-semibold text-[#0F172A]">
+            <h2 className="font-sans text-2xl font-bold text-[#0F172A]">
               Decisiones paso a paso bajo presión
             </h2>
-            <p className="text-sm text-slate-600 mt-0.5">
+            <p className="text-sm text-[#475569] mt-0.5">
               Primero encuentra qué falló, luego frena el daño sin apagar todo y al final protege los datos nuevos. Si pruebas una opción riesgosa, verás cómo reacciona tu equipo por correo.
             </p>
           </div>
-          <span className="text-xs font-mono font-semibold text-[#16263B] tabular-nums">
+          <span className="text-xs font-mono font-semibold text-[#2D6CDF] tabular-nums">
             {nodosCompletados.length} / {reto.nodos.length} pasos listos
           </span>
         </div>
@@ -471,13 +471,13 @@ export const Stage2Laboratorio: React.FC<Stage2LaboratorioProps> = ({
               return (
                 <div
                   key={nodo.id}
-                  className="bg-[#EFECE6]/55 rounded-2xl border border-[#E5E7EB] p-5 flex items-center justify-between gap-4 opacity-75"
+                  className="bg-[#F8FAFC] rounded-2xl border border-[#E2E8F0] p-5 flex items-center justify-between gap-4 opacity-75"
                 >
                   <div className="flex items-center gap-3">
                     <Lock className="w-5 h-5 text-slate-400 shrink-0" />
                     <div>
-                      <h3 className="text-sm font-semibold text-slate-700">{nodo.titulo}</h3>
-                      <p className="text-xs text-slate-500">
+                      <h3 className="text-sm font-semibold text-[#1E293B]">{nodo.titulo}</h3>
+                      <p className="text-xs text-[#64748B]">
                         Completa el paso anterior para abrir esta decisión.
                       </p>
                     </div>
@@ -490,14 +490,14 @@ export const Stage2Laboratorio: React.FC<Stage2LaboratorioProps> = ({
               <article
                 id={`decision-${nodo.id}`}
                 key={nodo.id}
-                className={`bg-white rounded-2xl border p-6 space-y-5 transition-all ${
-                  completado ? 'border-emerald-300' : 'border-[#E5E7EB]'
+                className={`scroll-mt-32 sm:scroll-mt-40 bg-white rounded-2xl border p-4 sm:p-6 space-y-5 transition-all ${
+                  completado ? 'border-emerald-300' : 'border-[#E2E8F0]'
                 }`}
               >
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="text-xs font-mono font-semibold text-slate-500">
+                      <span className="text-xs font-mono font-semibold text-[#64748B]">
                         Paso {nodo.numero} de {reto.nodos.length}
                       </span>
                       {completado && (
@@ -507,8 +507,8 @@ export const Stage2Laboratorio: React.FC<Stage2LaboratorioProps> = ({
                         </span>
                       )}
                     </div>
-                    <h3 className="font-serif text-xl font-semibold text-[#0F172A]">{nodo.titulo}</h3>
-                    <p className="mt-1.5 text-sm sm:text-base text-slate-700 leading-relaxed">
+                    <h3 className="font-sans text-xl font-bold text-[#0F172A]">{nodo.titulo}</h3>
+                    <p className="mt-1.5 text-sm sm:text-base text-[#1E293B] leading-relaxed">
                       <TextoConTerminos texto={nodo.contextoPregunta} />
                     </p>
                   </div>
@@ -519,7 +519,7 @@ export const Stage2Laboratorio: React.FC<Stage2LaboratorioProps> = ({
                       onClick={() =>
                         setPistasAbiertas((prev) => ({ ...prev, [nodo.id]: !prev[nodo.id] }))
                       }
-                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-[#EFECE6] text-[#16263B] hover:bg-[#E4DDD1] transition-colors whitespace-nowrap"
+                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-[#F1F5F9] text-[#1E293B] hover:bg-[#E2E8F0] transition-colors whitespace-nowrap"
                     >
                       <HelpCircle className="w-3.5 h-3.5" />
                       Pedir una pista
@@ -528,8 +528,8 @@ export const Stage2Laboratorio: React.FC<Stage2LaboratorioProps> = ({
                 </div>
 
                 {pistaAbierta && !completado && (
-                  <div className="bg-[#EFECE6]/70 border border-[#E5E7EB] rounded-xl p-4 text-xs sm:text-sm text-[#0F172A] leading-relaxed">
-                    <strong className="font-semibold">Pista de tu mentor:</strong>{' '}
+                  <div className="bg-[#EFF6FF] border border-[#DBEAFE] rounded-xl p-4 text-xs sm:text-sm text-[#0F172A] leading-relaxed">
+                    <strong className="font-semibold text-[#2D6CDF]">Pista de tu mentor:</strong>{' '}
                     <TextoConTerminos texto={nodo.pista} />
                   </div>
                 )}
@@ -547,8 +547,8 @@ export const Stage2Laboratorio: React.FC<Stage2LaboratorioProps> = ({
                           completado && opcion.esCorrecta
                             ? 'bg-emerald-50/70 border-emerald-400 text-[#0F172A]'
                             : seleccionada
-                            ? 'bg-[#EFECE6]/70 border-[#16263B] text-[#0F172A]'
-                            : 'bg-[#F9F8F6] border-[#E5E7EB] hover:bg-[#EFECE6]/40 text-slate-700'
+                            ? 'bg-[#EFF6FF] border-[#2D6CDF] text-[#0F172A]'
+                            : 'bg-[#F8FAFC] border-[#E2E8F0] hover:bg-[#EFF6FF]/50 text-[#1E293B]'
                         } ${completado ? 'cursor-default' : ''}`}
                       >
                         <input
@@ -560,9 +560,9 @@ export const Stage2Laboratorio: React.FC<Stage2LaboratorioProps> = ({
                           onChange={() =>
                             setSeleccionesPorNodo((prev) => ({ ...prev, [nodo.id]: opcion.id }))
                           }
-                          className="mt-1 accent-[#16263B]"
+                          className="mt-1 accent-[#2D6CDF]"
                         />
-                        <span className="text-sm leading-relaxed">
+                        <span className="text-sm leading-relaxed min-w-0">
                           <TextoConTerminos texto={opcion.texto} />
                         </span>
                       </label>
@@ -602,11 +602,11 @@ export const Stage2Laboratorio: React.FC<Stage2LaboratorioProps> = ({
 
                 {/* Validación correcta */}
                 {completado && opcionCorrecta && (
-                  <div className="rounded-xl bg-emerald-50/80 border border-emerald-200 p-4 flex items-start justify-between gap-4">
-                    <div className="space-y-1.5">
-                      <div className="flex flex-wrap items-center gap-2">
+                  <div className="space-y-3">
+                    <div className="w-full rounded-xl bg-emerald-50/80 border border-emerald-200 p-4 space-y-2">
+                      <div className="flex flex-wrap items-center justify-between gap-2">
                         <p className="text-xs font-semibold uppercase tracking-wider text-emerald-800 flex items-center gap-1.5">
-                          <CheckCircle2 className="w-4 h-4 text-[#10B981]" />
+                          <CheckCircle2 className="w-4 h-4 text-[#10B981] shrink-0" />
                           Decisión correcta
                         </p>
                         {opcionCorrecta.impactoMetricas && (
@@ -624,27 +624,30 @@ export const Stage2Laboratorio: React.FC<Stage2LaboratorioProps> = ({
                           </span>
                         )}
                       </div>
-                      <p className="text-sm text-emerald-950 leading-relaxed">
+                      <p className="w-full text-sm text-emerald-950 leading-relaxed">
                         <TextoConTerminos texto={opcionCorrecta.explicacionCorrecta || ''} />
                       </p>
                     </div>
+
                     {idx < reto.nodos.length - 1 && (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setNodoVisibleIdx(idx + 1);
-                          const siguienteId = `decision-${reto.nodos[idx + 1].id}`;
-                          window.setTimeout(() => {
-                            document
-                              .getElementById(siguienteId)
-                              ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                          }, 60);
-                        }}
-                        className="shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-[#16263B] text-white hover:bg-[#0F172A] whitespace-nowrap"
-                      >
-                        Ir al siguiente paso
-                        <ArrowRight className="w-3.5 h-3.5" />
-                      </button>
+                      <div className="flex justify-end">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setNodoVisibleIdx(idx + 1);
+                            const siguienteId = `decision-${reto.nodos[idx + 1].id}`;
+                            window.setTimeout(() => {
+                              document
+                                .getElementById(siguienteId)
+                                ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }, 60);
+                          }}
+                          className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-[#2D6CDF] text-white hover:bg-[#1D4ED8] transition-colors whitespace-nowrap cursor-pointer"
+                        >
+                          Ir al siguiente paso
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
                     )}
                   </div>
                 )}
@@ -656,7 +659,7 @@ export const Stage2Laboratorio: React.FC<Stage2LaboratorioProps> = ({
                       type="button"
                       disabled={!opcionElegidaId}
                       onClick={() => manejarComprobar(idx)}
-                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold bg-[#16263B] text-white hover:bg-[#0F172A] disabled:opacity-45 disabled:cursor-not-allowed transition-colors whitespace-nowrap"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold bg-[#2D6CDF] text-white hover:bg-[#1D4ED8] disabled:opacity-45 disabled:cursor-not-allowed transition-colors whitespace-nowrap"
                     >
                       Probar esta decisión
                     </button>
@@ -669,15 +672,15 @@ export const Stage2Laboratorio: React.FC<Stage2LaboratorioProps> = ({
 
         {/* Historial breve de correos recibidos en la sesión si hubo errores */}
         {correosRecibidos.length > 0 && (
-          <div className="bg-[#F9F8F6] rounded-2xl border border-[#E5E7EB] p-5 space-y-2">
-            <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+          <div className="bg-[#F8FAFC] rounded-2xl border border-[#E2E8F0] p-5 space-y-2">
+            <p className="text-xs font-semibold uppercase tracking-wider text-[#64748B]">
               Mensajes que recibiste en la práctica ({correosRecibidos.length} {correosRecibidos.length === 1 ? 'aviso' : 'avisos'})
             </p>
             <div className="space-y-1.5">
               {correosRecibidos.map((c) => (
                 <div
                   key={c.id}
-                  className="text-xs text-slate-700 flex flex-wrap items-center justify-between gap-2 py-1 border-b border-[#E5E7EB] last:border-b-0"
+                  className="text-xs text-[#1E293B] flex flex-wrap items-center justify-between gap-2 py-1 border-b border-[#E2E8F0] last:border-b-0"
                 >
                   <span>
                     <strong className="text-[#0F172A]">{c.remitente}:</strong> {c.asunto}
@@ -691,8 +694,8 @@ export const Stage2Laboratorio: React.FC<Stage2LaboratorioProps> = ({
       </section>
 
       {/* Compuerta hacia Tu Plan Final */}
-      <div className="flex flex-wrap items-center justify-between gap-4 pt-2 border-t border-[#E5E7EB]">
-        <p className="text-xs text-slate-500">
+      <div className="flex flex-wrap items-center justify-between gap-4 pt-2 border-t border-[#E2E8F0]">
+        <p className="text-xs text-[#64748B]">
           {todosNodosCompletados
             ? 'Todos los pasos están listos. Ya puedes enviar tu plan final a Mateo.'
             : 'Completa los 3 pasos en orden para abrir tu plan final.'}
@@ -701,7 +704,7 @@ export const Stage2Laboratorio: React.FC<Stage2LaboratorioProps> = ({
           type="button"
           disabled={!todosNodosCompletados}
           onClick={onAvanzar}
-          className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl text-sm font-semibold bg-[#16263B] text-white hover:bg-[#0F172A] disabled:opacity-40 disabled:cursor-not-allowed transition-colors whitespace-nowrap"
+          className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl text-sm font-semibold bg-[#2D6CDF] text-white hover:bg-[#1D4ED8] disabled:opacity-40 disabled:cursor-not-allowed transition-colors whitespace-nowrap"
         >
           <Sparkles className="w-4 h-4" />
           Ir a mi plan final

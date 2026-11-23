@@ -1,7 +1,6 @@
 @import "tailwindcss";
 
 @theme {
-  --font-serif: "Playfair Display", Georgia, Cambria, "Times New Roman", serif;
   --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
@@ -9,13 +8,13 @@
 @layer base {
   html {
     font-family: var(--font-sans);
-    background-color: #F9F8F6;
+    background-color: #F5F7FB;
     color: #0F172A;
     scroll-behavior: smooth;
   }
 
-  h1, h2 {
-    font-family: var(--font-serif);
+  h1, h2, h3, h4 {
+    font-family: var(--font-sans);
     text-wrap: balance;
   }
 }
@@ -50,4 +49,30 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+@keyframes drawerSlideInLeft {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes backdropFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-drawer-in {
+  animation: drawerSlideInLeft 220ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-backdrop-in {
+  animation: backdropFadeIn 200ms ease-out forwards;
 }

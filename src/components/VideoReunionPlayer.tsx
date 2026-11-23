@@ -91,7 +91,7 @@ export const VideoReunionPlayer: React.FC<VideoReunionPlayerProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-[#E5E7EB] overflow-hidden shadow-xs">
+    <div className="bg-white rounded-2xl border border-[#E2E8F0] overflow-hidden shadow-xs">
       {embedUrl ? (
         <div className="aspect-video w-full bg-[#0F172A]">
           <iframe
@@ -161,7 +161,7 @@ export const VideoReunionPlayer: React.FC<VideoReunionPlayerProps> = ({
                     onClick={() => seleccionarTurno(idx)}
                     className={`flex items-center gap-3 p-2.5 rounded-xl border text-left transition-all ${
                       activo
-                        ? 'bg-[#16263B] border-sky-400/70 text-white'
+                        ? 'bg-[#2D6CDF]/25 border-sky-400/70 text-white'
                         : 'bg-slate-900/60 border-slate-800 text-slate-300 hover:bg-slate-800/70'
                     }`}
                   >
@@ -230,24 +230,24 @@ export const VideoReunionPlayer: React.FC<VideoReunionPlayerProps> = ({
       )}
 
       {/* Transcripción interactiva desplegable */}
-      <div className="bg-white border-t border-[#E5E7EB]">
+      <div className="bg-white border-t border-[#E2E8F0]">
         <button
           type="button"
           onClick={() => setTranscripcionAbierta((prev) => !prev)}
-          className="w-full flex items-center justify-between px-5 py-3.5 text-left hover:bg-[#F9F8F6] transition-colors"
+          className="w-full flex items-center justify-between px-5 py-3.5 text-left hover:bg-[#F8FAFC] transition-colors"
         >
           <span className="text-sm font-semibold text-[#0F172A]">
             Lo que dijo cada compañero ({turnos.length} turnos)
           </span>
           {transcripcionAbierta ? (
-            <ChevronUp className="w-4 h-4 text-slate-500" />
+            <ChevronUp className="w-4 h-4 text-[#64748B]" />
           ) : (
-            <ChevronDown className="w-4 h-4 text-slate-500" />
+            <ChevronDown className="w-4 h-4 text-[#64748B]" />
           )}
         </button>
 
         {transcripcionAbierta && (
-          <div className="px-5 pb-5 pt-1 space-y-2.5 border-t border-[#E5E7EB]">
+          <div className="px-5 pb-5 pt-1 space-y-2.5 border-t border-[#E2E8F0]">
             {turnos.map((turno, idx) => {
               const esActivo = !embedUrl && idx === turnoIndex;
               return (
@@ -257,17 +257,17 @@ export const VideoReunionPlayer: React.FC<VideoReunionPlayerProps> = ({
                   onClick={() => seleccionarTurno(idx)}
                   className={`w-full text-left p-3.5 rounded-xl border transition-colors ${
                     esActivo
-                      ? 'bg-[#EFECE6]/70 border-[#16263B]/40'
-                      : 'bg-[#F9F8F6] border-[#E5E7EB] hover:bg-[#EFECE6]/40'
+                      ? 'bg-[#EFF6FF] border-[#2D6CDF]/40'
+                      : 'bg-[#F8FAFC] border-[#E2E8F0] hover:bg-[#EFF6FF]/50'
                   }`}
                 >
                   <div className="flex flex-wrap items-center justify-between gap-2 mb-1">
-                    <span className="text-xs font-semibold text-[#16263B]">
+                    <span className="text-xs font-semibold text-[#2D6CDF]">
                       {turno.hablanteNombre} · {turno.hablanteCargo}
                     </span>
-                    <span className="text-xs font-mono text-slate-500 tabular-nums">{turno.minuto}</span>
+                    <span className="text-xs font-mono text-[#64748B] tabular-nums">{turno.minuto}</span>
                   </div>
-                  <p className="text-sm text-slate-700 leading-relaxed">
+                  <p className="text-sm text-[#1E293B] leading-relaxed">
                     <TextoConTerminos texto={turno.mensaje} />
                   </p>
                 </button>

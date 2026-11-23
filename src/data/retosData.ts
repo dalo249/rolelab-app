@@ -1474,11 +1474,11 @@ export const RETOS: Reto[] = [
       {
         id: 'orden-optimo',
         etiqueta:
-          '1. Aliviar la fila con copia rápida temporal (solo lectura) y límite de recargas → 2. Confirmar que casi todos entren sin error (≥95 de cada 100) y se guarden asistencias nuevas → 3. Corregir las 420 preguntas en el código tras probarlo con muchos usuarios',
+          '1. Bajar la carga rápido usando una copia lista de asistencia de estudiantes y evitando recargas seguidas → 2. Revisar que al menos 95 de cada 100 entren sin error y que las asistencias nuevas se guarden → 3. Arreglar en el código las 420 preguntas uno por uno y probarlo con mucha gente',
         secuencia: [
-          'Aliviar fila con copia rápida y límite de recargas',
-          'Confirmar métricas y guardado real de asistencias',
-          'Corregir código tras simulacro con carga',
+          'Bajar la carga usando una copia lista de asistencia de estudiantes y evitando recargas seguidas',
+          'Revisar que al menos 95 de cada 100 entren sin error y se guarden asistencias nuevas',
+          'Arreglar en el código las 420 preguntas uno por uno y probarlo con mucha gente',
         ],
         esOptimo: true,
       },

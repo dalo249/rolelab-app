@@ -35,26 +35,26 @@ export const MetasEquilibrioGrid: React.FC<MetasEquilibrioGridProps> = ({ metric
   const latenciaMetaPct = Math.round((400 / latenciaMaxEscala) * 100);
 
   return (
-    <div className="bg-[#F9F8F6] rounded-2xl border border-[#E5E7EB] p-5 sm:p-6 space-y-5">
+    <div className="bg-[#F8FAFC] rounded-2xl border border-[#E2E8F0] p-5 sm:p-6 space-y-5">
       <div className="space-y-1">
-        <div className="flex items-center gap-2 text-[#16263B]">
+        <div className="flex items-center gap-2 text-[#2D6CDF]">
           <Gauge className="w-4 h-4" />
-          <h3 className="font-serif text-lg sm:text-xl font-semibold text-[#0F172A]">
+          <h3 className="font-sans text-lg sm:text-xl font-bold text-[#0F172A]">
             Las 2 metas que debes equilibrar hoy
           </h3>
         </div>
-        <p className="text-xs sm:text-sm text-slate-600">
+        <p className="text-xs sm:text-sm text-[#475569]">
           Cada decisión que tomes mueve estos dos indicadores al mismo tiempo:
         </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Tarjeta 1: Entran sin error */}
-        <article className="bg-white rounded-xl border border-[#E5E7EB] p-5 flex flex-col justify-between space-y-4">
+        <article className="bg-white rounded-xl border border-[#E2E8F0] p-5 flex flex-col justify-between space-y-4">
           <div className="space-y-2.5">
             <div className="flex items-center justify-between gap-2">
               <div className="flex items-center gap-2">
-                <span className="w-8 h-8 rounded-lg bg-[#EFECE6] text-[#16263B] flex items-center justify-center shrink-0">
+                <span className="w-8 h-8 rounded-lg bg-[#EFF6FF] text-[#2D6CDF] flex items-center justify-center shrink-0">
                   <ShieldCheck className="w-4 h-4" />
                 </span>
                 <h4 className="font-sans text-sm font-semibold text-[#0F172A]">
@@ -66,19 +66,19 @@ export const MetasEquilibrioGrid: React.FC<MetasEquilibrioGridProps> = ({ metric
               </span>
             </div>
 
-            <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
+            <p className="text-xs sm:text-sm text-[#1E293B] leading-relaxed">
               Estudiantes que entran correctamente a su curso sin que les salgan problemas ni errores (<TerminoTecnico palabra="HTTP 500" />). Así ves de inmediato qué tan bien funciona el acceso.
             </p>
           </div>
 
-          <div className="space-y-2.5 pt-2 border-t border-[#E5E7EB]">
-            <div className="grid grid-cols-2 gap-2 text-xs bg-[#F9F8F6] rounded-lg p-2.5 border border-[#E5E7EB]">
+          <div className="space-y-2.5 pt-2 border-t border-[#E2E8F0]">
+            <div className="grid grid-cols-2 gap-2 text-xs bg-[#F8FAFC] rounded-lg p-2.5 border border-[#E2E8F0]">
               <div>
-                <span className="block text-[10px] uppercase tracking-wider text-slate-500">Normal</span>
+                <span className="block text-[10px] uppercase tracking-wider text-[#64748B]">Normal</span>
                 <strong className="font-mono text-[#0F172A] tabular-nums">≥ 95 de cada 100</strong>
               </div>
               <div className="text-right">
-                <span className="block text-[10px] uppercase tracking-wider text-slate-500">Ahora</span>
+                <span className="block text-[10px] uppercase tracking-wider text-[#64748B]">Ahora</span>
                 <strong
                   className={`font-mono tabular-nums inline-flex items-center gap-1 ${
                     disponibilidadOk
@@ -96,7 +96,7 @@ export const MetasEquilibrioGrid: React.FC<MetasEquilibrioGridProps> = ({ metric
 
             {/* Barra dinámica con marcador de objetivo >= 95 de cada 100 */}
             <div className="relative pt-1 pb-4">
-              <div className="h-3 w-full rounded-full bg-[#EFECE6] overflow-hidden">
+              <div className="h-3 w-full rounded-full bg-[#E2E8F0]/70 overflow-hidden">
                 <div
                   className={`h-full rounded-full transition-all duration-500 ${
                     disponibilidadOk
@@ -121,7 +121,7 @@ export const MetasEquilibrioGrid: React.FC<MetasEquilibrioGridProps> = ({ metric
               </span>
             </div>
 
-            <p className="text-xs text-slate-600 leading-relaxed">
+            <p className="text-xs text-[#475569] leading-relaxed">
               {disponibilidadOk
                 ? 'Casi todos logran entrar a su clase sin problemas.'
                 : `Hoy ${100 - entranSinErrorDe100} de cada 100 estudiantes ven una pantalla de error al intentar entrar.`}
@@ -130,11 +130,11 @@ export const MetasEquilibrioGrid: React.FC<MetasEquilibrioGridProps> = ({ metric
         </article>
 
         {/* Tarjeta 2: Tiempo de respuesta */}
-        <article className="bg-white rounded-xl border border-[#E5E7EB] p-5 flex flex-col justify-between space-y-4">
+        <article className="bg-white rounded-xl border border-[#E2E8F0] p-5 flex flex-col justify-between space-y-4">
           <div className="space-y-2.5">
             <div className="flex items-center justify-between gap-2">
               <div className="flex items-center gap-2">
-                <span className="w-8 h-8 rounded-lg bg-[#EFECE6] text-[#16263B] flex items-center justify-center shrink-0">
+                <span className="w-8 h-8 rounded-lg bg-[#EFF6FF] text-[#2D6CDF] flex items-center justify-center shrink-0">
                   <Gauge className="w-4 h-4" />
                 </span>
                 <h4 className="font-sans text-sm font-semibold text-[#0F172A]">
@@ -146,19 +146,19 @@ export const MetasEquilibrioGrid: React.FC<MetasEquilibrioGridProps> = ({ metric
               </span>
             </div>
 
-            <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
+            <p className="text-xs sm:text-sm text-[#1E293B] leading-relaxed">
               Segundos (<span className="font-mono text-xs">s</span>) que espera un estudiante por clic hasta que abre un curso o carga la página del curso.
             </p>
           </div>
 
-          <div className="space-y-2.5 pt-2 border-t border-[#E5E7EB]">
-            <div className="grid grid-cols-2 gap-2 text-xs bg-[#F9F8F6] rounded-lg p-2.5 border border-[#E5E7EB]">
+          <div className="space-y-2.5 pt-2 border-t border-[#E2E8F0]">
+            <div className="grid grid-cols-2 gap-2 text-xs bg-[#F8FAFC] rounded-lg p-2.5 border border-[#E2E8F0]">
               <div>
-                <span className="block text-[10px] uppercase tracking-wider text-slate-500">Normal</span>
+                <span className="block text-[10px] uppercase tracking-wider text-[#64748B]">Normal</span>
                 <strong className="font-mono text-[#0F172A] tabular-nums">&lt; 0.4 s</strong>
               </div>
               <div className="text-right">
-                <span className="block text-[10px] uppercase tracking-wider text-slate-500">Ahora</span>
+                <span className="block text-[10px] uppercase tracking-wider text-[#64748B]">Ahora</span>
                 <strong
                   className={`font-mono tabular-nums inline-flex items-center gap-1 ${
                     latenciaOk ? 'text-[#10B981]' : latenciaLenta ? 'text-amber-700' : 'text-rose-700'
@@ -172,7 +172,7 @@ export const MetasEquilibrioGrid: React.FC<MetasEquilibrioGridProps> = ({ metric
 
             {/* Barra dinámica con zona saludable (< 0.4 s) y marcador */}
             <div className="relative pt-1 pb-4">
-              <div className="relative h-3 w-full rounded-full bg-[#EFECE6] overflow-hidden">
+              <div className="relative h-3 w-full rounded-full bg-[#E2E8F0]/70 overflow-hidden">
                 <div
                   className="absolute inset-y-0 left-0 bg-emerald-100"
                   style={{ width: `${latenciaMetaPct}%` }}
@@ -198,7 +198,7 @@ export const MetasEquilibrioGrid: React.FC<MetasEquilibrioGridProps> = ({ metric
               </span>
             </div>
 
-            <p className="text-xs text-slate-600 leading-relaxed">
+            <p className="text-xs text-[#475569] leading-relaxed">
               {latenciaOk
                 ? 'La página del curso abre al instante (en menos de medio segundo).'
                 : `Espera ${formatearSegundos(metricas.latenciaMs)} por clic y siente la vista congelada al cargar su curso.`}
