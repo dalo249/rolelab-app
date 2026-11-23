@@ -311,7 +311,10 @@ async function startServer() {
     });
     app.use(vite.middlewares);
   } else {
-    const distPath = path.resolve(__dirname, "dist");
+    const distPath = process.cwd() === path.resolve(__dirname, "..")
+    ? path.resolve(process.cwd(), "dist")
+    : path.resolve(__dirname, "dist");
+
     app.use(express.static(distPath));
     app.get("*", (_req, res) => {
       res.sendFile(path.join(distPath, "index.html"));
