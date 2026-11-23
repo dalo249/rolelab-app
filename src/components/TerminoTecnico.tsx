@@ -73,10 +73,10 @@ export const TerminoTecnico: React.FC<TerminoTecnicoProps> = ({
         onFocus={() => setAbierto(true)}
         onBlur={() => setAbierto(false)}
         aria-expanded={abierto}
-        className={`inline font-sans font-medium underline decoration-dotted decoration-2 underline-offset-4 transition-colors cursor-help focus:outline-none focus-visible:ring-2 focus-visible:ring-[#5B21B6] rounded-sm ${
+        className={`inline font-sans font-medium underline decoration-dotted decoration-2 underline-offset-4 transition-colors cursor-help focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2D6CDF] rounded-sm ${
           variant === 'dark'
-            ? 'text-purple-200 decoration-[#A78BFA] hover:text-white'
-            : 'text-[#0F172A] decoration-[#5B21B6] hover:text-[#5B21B6]'
+            ? 'text-sky-200 decoration-[#38BDF8] hover:text-white'
+            : 'text-[#0F172A] decoration-[#2D6CDF] hover:text-[#2D6CDF]'
         }`}
       >
         {textoFinal}
@@ -87,7 +87,7 @@ export const TerminoTecnico: React.FC<TerminoTecnicoProps> = ({
           role="tooltip"
           className={`absolute ${posicionTooltip} bottom-full mb-2.5 z-[80] w-64 sm:w-80 bg-[#0F172A] text-white rounded-2xl p-4 shadow-2xl border border-slate-700/70 text-left pointer-events-auto block`}
         >
-          <span className="block text-[11px] font-mono font-semibold uppercase tracking-wider text-purple-300 mb-1.5">
+          <span className="block text-[11px] font-mono font-semibold uppercase tracking-wider text-sky-300 mb-1.5">
             {palabra}
           </span>
           <span className="block text-xs leading-relaxed text-slate-200 font-sans font-normal">

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Menu } from 'lucide-react';
 import { CARRERAS, RETOS } from './data/retosData';
 import { HomeView } from './components/HomeView';
 import { LandingHomeView } from './components/LandingHomeView';
@@ -51,7 +52,9 @@ function cargarProgresoGuardado(): ProgresoGuardado {
       Array.isArray(parsed.evaluacionIA.efectoDomino) &&
       Array.isArray(parsed.evaluacionIA.habilidades) &&
       parsed.evaluacionIA.habilidades.length > 0 &&
-      typeof parsed.evaluacionIA.habilidades[0]?.queSignifica === 'string'
+      typeof parsed.evaluacionIA.habilidades[0]?.queSignifica === 'string' &&
+      Boolean(parsed.evaluacionIA.vidaReal?.queSeHace) &&
+      Boolean(parsed.evaluacionIA.brujulaAfinidad?.teGustaraSi)
         ? parsed.evaluacionIA
         : null;
 
@@ -86,6 +89,7 @@ export default function App() {
   } | null>(null);
   const [cargandoIA, setCargandoIA] = useState(false);
   const [errorEvaluacionIA, setErrorEvaluacionIA] = useState<string | null>(null);
+  const [menuLateralAbierto, setMenuLateralAbierto] = useState(false);
 
   const retoActivo = RETOS.find((r) => r.id === progreso.retoActivoId) || RETO_INICIAL;
 
@@ -129,6 +133,7 @@ export default function App() {
 
   const handleEntrarReto = (retoId: string) => {
     const retoDestino = RETOS.find((r) => r.id === retoId) || RETO_INICIAL;
+    setMenuLateralAbierto(false);
     setProgreso((prev) => ({
       ...prev,
       retoActivoId: retoDestino.id,
@@ -141,6 +146,7 @@ export default function App() {
   };
 
   const handleCambiarEtapa = (nuevaEtapa: number) => {
+    setMenuLateralAbierto(false);
     setProgreso((prev) => ({
       ...prev,
       etapaActual: Math.min(4, Math.max(0, nuevaEtapa)),
@@ -149,6 +155,7 @@ export default function App() {
   };
 
   const handleReintentarReto = () => {
+    setMenuLateralAbierto(false);
     window.localStorage.removeItem(STORAGE_KEY);
     const limpio: ProgresoGuardado = {
       ...crearEstadoInicial(),
@@ -277,31 +284,51 @@ export default function App() {
   };
 
   const enWorkspace = Boolean(progreso.retoActivoId);
+  const enDetalleCarrera =
+    !enWorkspace && vistaPrincipal === 'carreras' && Boolean(carreraSeleccionadaId);
+  const tieneMenuLateral = enWorkspace || enDetalleCarrera;
   const tieneProgresoActivo =
     progreso.etapaActual > 0 || progreso.nodosCompletados.length > 0;
 
   return (
-    <div className="min-h-screen bg-[#F9F8F6] text-[#0F172A] flex flex-col">
+    <div className="min-h-screen bg-[#F5F7FB] text-[#0F172A] flex flex-col">
       {/* Top Bar limpio */}
-      <header className="bg-white border-b border-[#E5E7EB]">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4 sm:gap-8">
-          <button
-            type="button"
-            onClick={() => {
-              setProgreso((prev) => ({ ...prev, retoActivoId: null }));
-              setCarreraSeleccionadaId(null);
-              setVistaPrincipal('home');
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-            className="font-serif text-xl font-bold tracking-tight text-[#0F172A] whitespace-nowrap shrink-0 hover:text-[#16263B] transition-colors cursor-pointer"
-          >
-            RoleLab
-          </button>
+      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-sm border-b border-[#E2E8F0]">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-3 sm:gap-8">
+          <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+            {tieneMenuLateral && (
+              <button
+                type="button"
+                onClick={() => setMenuLateralAbierto((prev) => !prev)}
+                aria-expanded={menuLateralAbierto}
+                aria-controls="navigation-drawer"
+                aria-label={menuLateralAbierto ? 'Cerrar menú lateral' : 'Abrir menú lateral'}
+                className="inline-flex items-center justify-center w-9 h-9 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] text-[#1E293B] hover:bg-[#EFF6FF] hover:text-[#2D6CDF] hover:border-[#BFDBFE] transition-colors shrink-0 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2D6CDF]"
+              >
+                <Menu className="w-4 h-4" aria-hidden="true" />
+              </button>
+            )}
 
-          <nav aria-label="Navegación principal" className="flex items-center gap-5 sm:gap-6 text-sm font-medium text-slate-600">
             <button
               type="button"
               onClick={() => {
+                setMenuLateralAbierto(false);
+                setProgreso((prev) => ({ ...prev, retoActivoId: null }));
+                setCarreraSeleccionadaId(null);
+                setVistaPrincipal('home');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="font-sans text-xl font-bold tracking-tight text-[#0F172A] whitespace-nowrap shrink-0 hover:text-[#2D6CDF] transition-colors cursor-pointer"
+            >
+              RoleLab
+            </button>
+          </div>
+
+          <nav aria-label="Navegación principal" className="flex items-center gap-3.5 sm:gap-6 text-xs sm:text-sm font-medium text-[#475569]">
+            <button
+              type="button"
+              onClick={() => {
+                setMenuLateralAbierto(false);
                 setProgreso((prev) => ({ ...prev, retoActivoId: null }));
                 setCarreraSeleccionadaId(null);
                 setVistaPrincipal('home');
@@ -310,7 +337,7 @@ export default function App() {
               aria-current={!enWorkspace && vistaPrincipal === 'home' ? 'page' : undefined}
               className={`transition-colors whitespace-nowrap shrink-0 cursor-pointer pb-0.5 ${
                 !enWorkspace && vistaPrincipal === 'home'
-                  ? 'text-[#0F172A] font-semibold border-b-2 border-[#16263B]'
+                  ? 'text-[#2D6CDF] font-semibold border-b-2 border-[#2D6CDF]'
                   : 'hover:text-[#0F172A]'
               }`}
             >
@@ -319,6 +346,7 @@ export default function App() {
             <button
               type="button"
               onClick={() => {
+                setMenuLateralAbierto(false);
                 setProgreso((prev) => ({ ...prev, retoActivoId: null }));
                 setCarreraSeleccionadaId(null);
                 setVistaPrincipal('carreras');
@@ -327,7 +355,7 @@ export default function App() {
               aria-current={!enWorkspace && vistaPrincipal === 'carreras' ? 'page' : undefined}
               className={`transition-colors whitespace-nowrap shrink-0 cursor-pointer pb-0.5 ${
                 !enWorkspace && vistaPrincipal === 'carreras'
-                  ? 'text-[#0F172A] font-semibold border-b-2 border-[#16263B]'
+                  ? 'text-[#2D6CDF] font-semibold border-b-2 border-[#2D6CDF]'
                   : 'hover:text-[#0F172A]'
               }`}
             >
@@ -336,6 +364,7 @@ export default function App() {
             <button
               type="button"
               onClick={() => {
+                setMenuLateralAbierto(false);
                 setProgreso((prev) => ({ ...prev, retoActivoId: null }));
                 setCarreraSeleccionadaId(null);
                 setVistaPrincipal('retos');
@@ -344,7 +373,7 @@ export default function App() {
               aria-current={!enWorkspace && vistaPrincipal === 'retos' ? 'page' : undefined}
               className={`transition-colors whitespace-nowrap shrink-0 cursor-pointer pb-0.5 ${
                 !enWorkspace && vistaPrincipal === 'retos'
-                  ? 'text-[#0F172A] font-semibold border-b-2 border-[#16263B]'
+                  ? 'text-[#2D6CDF] font-semibold border-b-2 border-[#2D6CDF]'
                   : 'hover:text-[#0F172A]'
               }`}
             >
@@ -370,8 +399,11 @@ export default function App() {
             evaluacionIA={progreso.evaluacionIA}
             cargandoIA={cargandoIA}
             errorEvaluacionIA={errorEvaluacionIA}
+            menuLateralAbierto={menuLateralAbierto}
+            onCerrarMenuLateral={() => setMenuLateralAbierto(false)}
             onCambiarEtapa={handleCambiarEtapa}
             onVolverCarreras={() => {
+              setMenuLateralAbierto(false);
               setProgreso((prev) => ({ ...prev, retoActivoId: null }));
               setVistaPrincipal('carreras');
               window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -382,6 +414,7 @@ export default function App() {
             onActualizarPropuesta={handleActualizarPropuesta}
             onEnviarYAnalizar={handleEnviarYAnalizar}
             onExplorarPiramide={() => {
+              setMenuLateralAbierto(false);
               setProgreso((prev) => ({ ...prev, retoActivoId: null }));
               setVistaPrincipal('carreras');
               setCarreraSeleccionadaId('ingenieria-software-cloud');
@@ -391,11 +424,13 @@ export default function App() {
         ) : vistaPrincipal === 'home' ? (
           <LandingHomeView
             onExplorarCarreras={() => {
+              setMenuLateralAbierto(false);
               setCarreraSeleccionadaId(null);
               setVistaPrincipal('carreras');
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
             onExplorarRetos={() => {
+              setMenuLateralAbierto(false);
               setCarreraSeleccionadaId(null);
               setVistaPrincipal('retos');
               window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -412,7 +447,10 @@ export default function App() {
             carreras={CARRERAS}
             carreraSeleccionadaId={carreraSeleccionadaId}
             tieneProgresoActivo={tieneProgresoActivo}
+            menuLateralAbierto={menuLateralAbierto}
+            onCerrarMenuLateral={() => setMenuLateralAbierto(false)}
             onSeleccionarCarrera={(id) => {
+              setMenuLateralAbierto(false);
               setCarreraSeleccionadaId(id);
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}

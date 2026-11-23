@@ -30,6 +30,8 @@ interface HomeViewProps {
   carreras: Carrera[];
   carreraSeleccionadaId: string | null;
   tieneProgresoActivo: boolean;
+  menuLateralAbierto: boolean;
+  onCerrarMenuLateral: () => void;
   onSeleccionarCarrera: (carreraId: string | null) => void;
   onEntrarReto: (retoId: string) => void;
 }
@@ -42,7 +44,7 @@ const AREAS_FILTRO: Array<'Todas' | AreaCarrera> = [
 ];
 
 function renderIconoHerramienta(icono: IconoHerramienta) {
-  const props = { className: 'w-4 h-4 text-[#16263B] shrink-0', 'aria-hidden': true as const };
+  const props = { className: 'w-4 h-4 text-[#2D6CDF] shrink-0', 'aria-hidden': true as const };
   switch (icono) {
     case 'activity':
       return <Activity {...props} />;
@@ -97,6 +99,8 @@ export const HomeView: React.FC<HomeViewProps> = ({
   carreras,
   carreraSeleccionadaId,
   tieneProgresoActivo,
+  menuLateralAbierto,
+  onCerrarMenuLateral,
   onSeleccionarCarrera,
   onEntrarReto,
 }) => {
@@ -224,58 +228,59 @@ export const HomeView: React.FC<HomeViewProps> = ({
     };
 
     return (
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          {/* Barra lateral izquierda de navegación (reutilizada del Workspace del reto) */}
-          <SidebarNavegacion
-            titulo={carreraActiva.titulo}
-            subtitulo={`${carreraActiva.area} · ${carreraActiva.nivelEntrada}`}
-            ariaLabel="Secciones de la carrera"
-            onVolver={() => onSeleccionarCarrera(null)}
-            items={[
-              {
-                id: 'que-es',
-                titulo: 'Acerca de la profesión',
-                activa: seccionCarreraActiva === 'que-es',
-                onClick: () => irASeccionCarrera('que-es'),
-              },
-              {
-                id: 'actividades',
-                titulo: 'Actividades del día a día',
-                activa: seccionCarreraActiva === 'actividades',
-                onClick: () => irASeccionCarrera('actividades'),
-              },
-              {
-                id: 'niveles',
-                titulo: 'Niveles y retos prácticos',
-                activa: seccionCarreraActiva === 'niveles',
-                onClick: () => irASeccionCarrera('niveles'),
-              },
-            ]}
-            footer={
-              <p className="text-[11px] text-slate-500 leading-relaxed">
-                Escenario y perfil profesional simulado con fines educativos.
-              </p>
-            }
-          />
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        {/* Menú lateral desplegable (drawer en PC y móvil) */}
+        <SidebarNavegacion
+          abierto={menuLateralAbierto}
+          onCerrar={onCerrarMenuLateral}
+          titulo={carreraActiva.titulo}
+          subtitulo={`${carreraActiva.area} · ${carreraActiva.nivelEntrada}`}
+          ariaLabel="Secciones de la carrera"
+          onVolver={() => onSeleccionarCarrera(null)}
+          items={[
+            {
+              id: 'que-es',
+              titulo: 'Acerca de la profesión',
+              activa: seccionCarreraActiva === 'que-es',
+              onClick: () => irASeccionCarrera('que-es'),
+            },
+            {
+              id: 'actividades',
+              titulo: 'Actividades del día a día',
+              activa: seccionCarreraActiva === 'actividades',
+              onClick: () => irASeccionCarrera('actividades'),
+            },
+            {
+              id: 'niveles',
+              titulo: 'Niveles y retos prácticos',
+              activa: seccionCarreraActiva === 'niveles',
+              onClick: () => irASeccionCarrera('niveles'),
+            },
+          ]}
+          footer={
+            <p className="text-[11px] text-[#64748B] leading-relaxed">
+              Escenario y perfil profesional simulado con fines educativos.
+            </p>
+          }
+        />
 
-          {/* Columna principal de exploración de la carrera */}
-          <div className="lg:col-span-9 space-y-8 min-w-0">
-            <div ref={queEsRef} id="seccion-que-es" className="scroll-mt-6 space-y-8">
+        {/* Columna principal de exploración de la carrera */}
+        <div className="space-y-8 min-w-0">
+          <div ref={queEsRef} id="seccion-que-es" className="scroll-mt-20 sm:scroll-mt-24 space-y-8">
               {/* Encabezado editorial de la carrera */}
-              <section className="bg-white rounded-2xl border border-[#E5E7EB] p-6 sm:p-8 shadow-xs space-y-4">
+              <section className="bg-white rounded-2xl border border-[#E2E8F0] p-6 sm:p-8 shadow-xs space-y-4">
                 <div>
-                  <p className="text-xs font-medium text-slate-500 mb-2">
+                  <p className="text-xs font-medium text-[#64748B] mb-2">
                     {carreraActiva.area} · {carreraActiva.duracionEstimada} · {carreraActiva.nivelEntrada}
                   </p>
-                  <h1 className="font-serif text-3xl sm:text-4xl font-semibold text-[#0F172A] tracking-tight leading-tight">
+                  <h1 className="font-sans text-3xl sm:text-4xl font-bold text-[#0F172A] tracking-tight leading-tight">
                     {carreraActiva.titulo}
                   </h1>
                 </div>
 
                 {carreraActiva.retoTitulo && (
                   <div>
-                    <div className="inline-flex flex-wrap items-center gap-2 px-3.5 py-2 rounded-xl bg-[#F9F8F6] border border-[#E5E7EB] text-xs text-slate-700">
+                    <div className="inline-flex flex-wrap items-center gap-2 px-3.5 py-2 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-xs text-[#475569]">
                       <CheckCircle2 className="w-4 h-4 text-[#10B981] shrink-0" />
                       <span>
                         <strong className="text-[#0F172A]">Reto inicial (Nivel 1 · Junior):</strong>{' '}
@@ -289,22 +294,22 @@ export const HomeView: React.FC<HomeViewProps> = ({
               {/* Acerca de la carrera */}
               <section
                 id="acerca-de-carrera"
-                className="scroll-mt-6 bg-white rounded-2xl border border-[#E5E7EB] p-6 sm:p-10 space-y-10"
+                className="scroll-mt-20 sm:scroll-mt-24 bg-white rounded-2xl border border-[#E2E8F0] p-6 sm:p-10 space-y-10"
               >
           {/* 1. Parte superior: Título y descripción general */}
           <div className="max-w-3xl mx-auto text-center space-y-4">
-            <p className="text-xs font-mono font-semibold uppercase tracking-wider text-slate-500">
+            <p className="text-xs font-mono font-semibold uppercase tracking-wider text-[#2D6CDF]">
               Conoce acerca de la ingenieria de Software
             </p>
-            <div className="mt-4 text-base text-slate-700 leading-relaxed leading-relaxed">
+            <div className="mt-4 text-base text-[#475569] leading-relaxed">
               <p> {carreraActiva.acercaDe.queTrata} </p>
             </div>
           </div>
 
           {/* 2. Video explicativo de la carrera (fachada interactiva antes de cargar el iframe) */}
           {carreraActiva.videoExplicativoUrl && (
-            <div className="max-w-4xl mx-auto rounded-2xl border border-[#E5E7EB] bg-[#F9F8F6] p-3 sm:p-4 space-y-3">
-              <div className="relative aspect-video w-full rounded-xl overflow-hidden border border-[#E5E7EB] bg-[#0B1526]">
+            <div className="max-w-4xl mx-auto rounded-2xl border border-[#DBEAFE] bg-[#EFF6FF]/60 p-3 sm:p-4 space-y-3">
+              <div className="relative aspect-video w-full rounded-xl overflow-hidden border border-[#E2E8F0] bg-[#0F172A]">
                 {videoCargado && obtenerEmbedUrlYouTube(carreraActiva.videoExplicativoUrl) ? (
                   <iframe
                     src={obtenerEmbedUrlYouTube(carreraActiva.videoExplicativoUrl)!}
@@ -326,7 +331,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                         type="button"
                         onClick={() => setVideoCargado(true)}
                         aria-label={`Reproducir video explicativo de ${carreraActiva.titulo}`}
-                        className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white/95 hover:bg-white text-[#16263B] shadow-xl ring-4 ring-white/20 hover:ring-white/35 flex items-center justify-center transition-all duration-200 hover:scale-105 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                        className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white/95 hover:bg-white text-[#2D6CDF] shadow-xl ring-4 ring-white/20 hover:ring-white/35 flex items-center justify-center transition-all duration-200 hover:scale-105 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
                       >
                         <Play className="w-6 h-6 fill-current ml-0.5" aria-hidden="true" />
                       </button>
@@ -334,16 +339,16 @@ export const HomeView: React.FC<HomeViewProps> = ({
                   </div>
                 )}
               </div>
-              <div className="flex flex-wrap items-center justify-between gap-2 px-1 text-xs text-slate-600">
-                <span className="inline-flex items-center gap-1.5 font-medium text-[#16263B]">
-                  <PlayCircle className="w-4 h-4 text-[#16263B]" />
+              <div className="flex flex-wrap items-center justify-between gap-2 px-1 text-xs text-[#475569]">
+                <span className="inline-flex items-center gap-1.5 font-semibold text-[#0F172A]">
+                  <PlayCircle className="w-4 h-4 text-[#2D6CDF]" />
                   Video explicativo de la carrera
                 </span>
                 <a
                   href={carreraActiva.videoExplicativoUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 font-medium text-[#16263B] hover:text-[#0F172A] underline decoration-[#CBD5E1] underline-offset-4 transition-colors"
+                  className="inline-flex items-center gap-1.5 font-semibold text-[#2D6CDF] hover:text-[#1D4ED8] underline decoration-[#BFDBFE] underline-offset-4 transition-colors"
                 >
                   Si no carga el reproductor, míralo directamente en YouTube
                   <ExternalLink className="w-3.5 h-3.5" />
@@ -356,13 +361,13 @@ export const HomeView: React.FC<HomeViewProps> = ({
           <div
             ref={actividadesRef}
             id="seccion-actividades"
-            className="scroll-mt-6 pt-4 border-t border-[#E5E7EB] space-y-8"
+            className="scroll-mt-20 sm:scroll-mt-24 pt-4 border-t border-[#E2E8F0] space-y-8"
           >
             <div className="space-y-1">
-              <p className="text-xs font-mono font-semibold uppercase tracking-wider text-slate-500">
+              <p className="text-xs font-mono font-semibold uppercase tracking-wider text-[#2D6CDF]">
                 Lo que hace en su día a día
               </p>
-              <h3 className="font-serif text-2xl sm:text-3xl font-semibold text-[#0F172A]">
+              <h3 className="font-sans text-2xl sm:text-3xl font-bold text-[#0F172A]">
                 Actividades generales que realiza un ingeniero de software
               </h3>
             </div>
@@ -408,18 +413,18 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 return (
                   <article
                     key={actividad.titulo}
-                    className="relative bg-[#F9F8F6] rounded-2xl border border-[#E5E7EB] px-6 pt-9 pb-6 shadow-xs"
+                    className="relative bg-[#F8FAFC] rounded-2xl border border-[#E2E8F0] px-6 pt-9 pb-6 shadow-xs"
                   >
                     <span
                       aria-hidden="true"
-                      className="absolute -top-5 left-6 w-11 h-11 rounded-full bg-[#16263B] text-white flex items-center justify-center shadow-sm ring-4 ring-white"
+                      className="absolute -top-5 left-6 w-11 h-11 rounded-full bg-[#2D6CDF] text-white flex items-center justify-center shadow-sm ring-4 ring-white"
                     >
                       <Icono className="w-5 h-5" />
                     </span>
-                    <h4 className="font-serif text-lg font-semibold text-[#0F172A]">
+                    <h4 className="font-sans text-lg font-bold text-[#0F172A]">
                       {actividad.titulo}
                     </h4>
-                    <p className="mt-2 text-sm text-slate-600 leading-relaxed">
+                    <p className="mt-2 text-sm text-[#475569] leading-relaxed">
                       {actividad.descripcion}
                     </p>
                   </article>
@@ -434,18 +439,18 @@ export const HomeView: React.FC<HomeViewProps> = ({
         <section
           id="progresion-carrera"
           ref={progresionRef}
-          className="scroll-mt-6 bg-white rounded-2xl border border-[#E5E7EB] p-6 sm:p-8 space-y-8"
+          className="scroll-mt-20 sm:scroll-mt-24 bg-white rounded-2xl border border-[#E2E8F0] p-6 sm:p-8 space-y-8"
         >
-          <div className="flex flex-wrap items-end justify-between gap-4 border-b border-[#E5E7EB] pb-5">
+          <div className="flex flex-wrap items-end justify-between gap-4 border-b border-[#E2E8F0] pb-5">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">
+              <p className="text-xs font-semibold uppercase tracking-wider text-[#64748B] mb-1">
                 Explora cada etapa profesional · Selecciona cualquier nivel para ver su ficha completa
               </p>
-              <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-[#0F172A]">
+              <h2 className="font-sans text-2xl sm:text-3xl font-bold text-[#0F172A]">
                 Progresión de la carrera
               </h2>
             </div>
-            <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#EFECE6] text-xs font-semibold text-[#16263B]">
+            <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#EFF6FF] border border-[#DBEAFE] text-xs font-semibold text-[#1E293B]">
               <CheckCircle2 className="w-4 h-4 text-[#10B981]" />
               Tu punto de partida hoy: Nivel 1 · Graduate / Junior
             </div>
@@ -453,8 +458,8 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             {/* Columna izquierda: Pirámide interactiva de 4 niveles */}
-            <div className="lg:col-span-5 lg:sticky lg:top-8 space-y-4">
-              <p className="text-xs text-slate-500 text-center">
+            <div className="lg:col-span-5 lg:sticky lg:top-24 space-y-4">
+              <p className="text-xs text-[#64748B] text-center">
                 Haz clic en cualquier escalón de la pirámide para cambiar el nivel mostrado a la derecha.
               </p>
               <div className="flex flex-col items-center gap-3 py-1">
@@ -470,16 +475,16 @@ export const HomeView: React.FC<HomeViewProps> = ({
                       aria-pressed={seleccionado}
                       className={`${anchosPiramide[nivel.nivel]} rounded-2xl px-4 py-4 border text-left transition-all cursor-pointer ${
                         seleccionado
-                          ? 'bg-[#16263B] text-white border-[#0F172A] shadow-md'
+                          ? 'bg-[#2D6CDF] text-white border-[#1D4ED8] shadow-md'
                           : esActivoReto
-                          ? 'bg-[#EFECE6] text-[#0F172A] border-[#16263B]/40 hover:border-[#16263B]'
-                          : 'bg-[#F9F8F6] text-[#0F172A] border-[#E5E7EB] hover:bg-[#EFECE6]/70'
+                          ? 'bg-[#EFF6FF] text-[#0F172A] border-[#2D6CDF]/40 hover:border-[#2D6CDF]'
+                          : 'bg-[#F8FAFC] text-[#0F172A] border-[#E2E8F0] hover:bg-[#F1F5F9]'
                       }`}
                     >
                       <div className="flex flex-wrap items-center justify-between gap-2">
                         <span
                           className={`text-[11px] font-mono font-semibold uppercase tracking-wider ${
-                            seleccionado ? 'text-slate-300' : 'text-slate-500'
+                            seleccionado ? 'text-blue-100' : 'text-[#64748B]'
                           }`}
                         >
                           Nivel {nivel.nivel} · {nivel.rangoExperiencia}
@@ -489,7 +494,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                             className={`text-[11px] font-semibold px-2 py-0.5 rounded-lg ${
                               seleccionado
                                 ? 'bg-[#10B981] text-white'
-                                : 'bg-[#16263B] text-white'
+                                : 'bg-[#2D6CDF] text-white'
                             }`}
                           >
                             Simulación activa
@@ -497,14 +502,14 @@ export const HomeView: React.FC<HomeViewProps> = ({
                         ) : (
                           <span
                             className={`text-[11px] font-medium ${
-                              seleccionado ? 'text-slate-300' : 'text-slate-500'
+                              seleccionado ? 'text-blue-100' : 'text-[#64748B]'
                             }`}
                           >
                             Etapa futura
                           </span>
                         )}
                       </div>
-                      <h3 className="mt-1 font-serif text-lg font-semibold leading-snug">
+                      <h3 className="mt-1 font-sans text-lg font-bold leading-snug">
                         {nivel.titulo}
                       </h3>
 
@@ -516,12 +521,12 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
             {/* Columna derecha: Ficha del nivel seleccionado */}
             {nivelSeleccionado && (
-              <div className="lg:col-span-7 bg-[#F9F8F6] rounded-2xl border border-[#E5E7EB] flex flex-col">
+              <div className="lg:col-span-7 bg-[#F8FAFC] rounded-2xl border border-[#E2E8F0] flex flex-col">
                 <div className="p-6 sm:p-8 space-y-6">
                   {/* 01 · Nivel seleccionado */}
                   <div className="space-y-2">
                     <div className="flex flex-wrap items-center justify-between gap-3">
-                      <span className="text-xs font-mono font-semibold uppercase tracking-wider text-slate-500">
+                      <span className="text-xs font-mono font-semibold uppercase tracking-wider text-[#2D6CDF]">
                         01 · Nivel seleccionado · Nivel {nivelSeleccionado.nivel} ({nivelSeleccionado.rangoExperiencia})
                       </span>
                       {nivelSeleccionado.experienciaPractica.disponible ? (
@@ -530,33 +535,33 @@ export const HomeView: React.FC<HomeViewProps> = ({
                           Simulación activa
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 bg-[#EFECE6] border border-[#E5E7EB] px-3 py-1 rounded-xl">
-                          <Clock className="w-3.5 h-3.5 text-slate-500" />
+                        <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#475569] bg-[#F1F5F9] border border-[#E2E8F0] px-3 py-1 rounded-xl">
+                          <Clock className="w-3.5 h-3.5 text-[#64748B]" />
                           Etapa futura
                         </span>
                       )}
                     </div>
-                    <h3 className="font-serif text-2xl sm:text-3xl font-semibold text-[#0F172A]">
+                    <h3 className="font-sans text-2xl sm:text-3xl font-bold text-[#0F172A]">
                       Nivel {nivelSeleccionado.nivel}: {nivelSeleccionado.titulo}
                     </h3>
-                    <p className="text-xs font-medium text-slate-600">
+                    <p className="text-xs font-medium text-[#475569]">
                       Experiencia habitual: <span className="font-mono text-[#0F172A]">{nivelSeleccionado.rangoExperiencia}</span>
                     </p>
                   </div>
 
                   {/* 02 · Así es el trabajo en esta etapa */}
-                  <div className="pt-5 border-t border-[#E5E7EB] space-y-2">
-                    <p className="text-xs font-mono font-semibold uppercase tracking-wider text-slate-500">
+                  <div className="pt-5 border-t border-[#E2E8F0] space-y-2">
+                    <p className="text-xs font-mono font-semibold uppercase tracking-wider text-[#64748B]">
                       02 · Así es el trabajo en esta etapa
                     </p>
-                    <p className="text-sm sm:text-[15px] text-slate-700 leading-relaxed">
+                    <p className="text-sm sm:text-[15px] text-[#475569] leading-relaxed">
                       {nivelSeleccionado.descripcionEtapa}
                     </p>
                   </div>
 
                   {/* 03 · Habilidades clave (chips inactivos estilo selector) */}
-                  <div className="pt-5 border-t border-[#E5E7EB] space-y-3">
-                    <p className="text-xs font-mono font-semibold uppercase tracking-wider text-slate-500">
+                  <div className="pt-5 border-t border-[#E2E8F0] space-y-3">
+                    <p className="text-xs font-mono font-semibold uppercase tracking-wider text-[#64748B]">
                       03 · Habilidades clave
                     </p>
                     <div className="flex flex-wrap gap-2" role="group" aria-label="Habilidades clave del nivel">
@@ -566,7 +571,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                           type="button"
                           disabled
                           aria-disabled="true"
-                          className="inline-flex items-center px-3 py-1.5 rounded-xl bg-white border border-[#E5E7EB] text-xs font-medium text-[#16263B] cursor-default select-none"
+                          className="inline-flex items-center px-3 py-1.5 rounded-xl bg-white border border-[#E2E8F0] text-xs font-medium text-[#1E293B] cursor-default select-none"
                         >
                           {hab}
                         </button>
@@ -575,12 +580,12 @@ export const HomeView: React.FC<HomeViewProps> = ({
                   </div>
 
                   {/* 04 · Cargos y roles disponibles */}
-                  <div className="pt-5 border-t border-[#E5E7EB] space-y-3">
+                  <div className="pt-5 border-t border-[#E2E8F0] space-y-3">
                     <div>
-                      <p className="text-xs font-mono font-semibold uppercase tracking-wider text-slate-500">
+                      <p className="text-xs font-mono font-semibold uppercase tracking-wider text-[#64748B]">
                         04 · Cargos y roles disponibles
                       </p>
-                      <p className="mt-1 text-xs text-slate-600">
+                      <p className="mt-1 text-xs text-[#475569]">
                         Haz clic en cualquier cargo para ver qué hace en su jornada, qué problemas resuelve y sus herramientas.
                       </p>
                     </div>
@@ -591,17 +596,17 @@ export const HomeView: React.FC<HomeViewProps> = ({
                           key={cargo.id}
                           type="button"
                           onClick={() => setCargoModal(cargo)}
-                          className="group w-full bg-white rounded-xl border border-[#E5E7EB] hover:border-[#16263B] px-4 py-3.5 text-left transition-all cursor-pointer flex items-center justify-between gap-4"
+                          className="group w-full bg-white rounded-xl border border-[#E2E8F0] hover:border-[#2D6CDF] px-4 py-3.5 text-left transition-all cursor-pointer flex items-center justify-between gap-4"
                         >
                           <div className="space-y-0.5">
-                            <h4 className="text-sm font-semibold text-[#0F172A] group-hover:text-[#16263B]">
+                            <h4 className="text-sm font-semibold text-[#0F172A] group-hover:text-[#2D6CDF]">
                               {cargo.titulo}
                             </h4>
-                            <p className="text-xs text-slate-600 leading-relaxed">
+                            <p className="text-xs text-[#475569] leading-relaxed">
                               {cargo.descripcionBreve}
                             </p>
                           </div>
-                          <span className="inline-flex items-center gap-1 text-xs font-semibold text-[#16263B] shrink-0 whitespace-nowrap">
+                          <span className="inline-flex items-center gap-1 text-xs font-semibold text-[#2D6CDF] shrink-0 whitespace-nowrap">
                             Ver ficha
                             <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                           </span>
@@ -612,8 +617,8 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 </div>
 
                 {/* 05 · Barra inferior anclada/flotante · Experiencia práctica */}
-                <div className="sticky bottom-0 z-20 bg-white/95 backdrop-blur-sm border-t border-[#E5E7EB] rounded-b-2xl px-6 py-4 sm:px-8 sm:py-5 shadow-[0_-10px_28px_-14px_rgba(15,23,42,0.14)] space-y-2.5">
-                  <p className="text-xs font-mono font-semibold uppercase tracking-wider text-slate-500">
+                <div className="lg:sticky lg:bottom-0 z-20 bg-white/95 backdrop-blur-sm border-t border-[#E2E8F0] rounded-b-2xl px-6 py-4 sm:px-8 sm:py-5 lg:shadow-[0_-10px_28px_-14px_rgba(15,23,42,0.14)] space-y-2.5">
+                  <p className="text-xs font-mono font-semibold uppercase tracking-wider text-[#64748B]">
                     05 · Experiencia práctica · Experimenta un día en este rol
                   </p>
 
@@ -622,8 +627,8 @@ export const HomeView: React.FC<HomeViewProps> = ({
                       <p className="text-sm font-semibold text-[#0F172A]">
                         Reto: {nivelSeleccionado.experienciaPractica.tituloReto}
                       </p>
-                      <p className="inline-flex items-center gap-1.5 text-xs font-mono text-slate-600">
-                        <Clock className="w-3.5 h-3.5 text-[#16263B]" />
+                      <p className="inline-flex items-center gap-1.5 text-xs font-mono text-[#475569]">
+                        <Clock className="w-3.5 h-3.5 text-[#2D6CDF]" />
                         <span>
                           <strong className="font-sans text-[#0F172A]">Duración estimada:</strong>{' '}
                           {nivelSeleccionado.experienciaPractica.duracionEstimada}
@@ -635,7 +640,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                       <button
                         type="button"
                         onClick={() => onEntrarReto(carreraActiva.retoId!)}
-                        className="shrink-0 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold bg-[#16263B] text-white hover:bg-[#0F172A] transition-colors cursor-pointer whitespace-nowrap"
+                        className="shrink-0 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold bg-[#2D6CDF] text-white hover:bg-[#1D4ED8] transition-colors cursor-pointer whitespace-nowrap"
                       >
                         Experimenta este rol
                         <ArrowRight className="w-4 h-4" />
@@ -644,7 +649,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                       <button
                         type="button"
                         disabled
-                        className="shrink-0 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold bg-slate-200 text-slate-500 cursor-not-allowed whitespace-nowrap"
+                        className="shrink-0 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold bg-[#F1F5F9] text-[#64748B] border border-[#E2E8F0] cursor-not-allowed whitespace-nowrap"
                       >
                         Experimenta este rol
                       </button>
@@ -653,7 +658,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
                   {!nivelSeleccionado.experienciaPractica.disponible &&
                     nivelSeleccionado.experienciaPractica.notaEstado && (
-                      <p className="text-[11px] text-slate-500 leading-relaxed">
+                      <p className="text-[11px] text-[#64748B] leading-relaxed">
                         {nivelSeleccionado.experienciaPractica.notaEstado}
                       </p>
                     )}
@@ -662,7 +667,6 @@ export const HomeView: React.FC<HomeViewProps> = ({
             )}
           </div>
         </section>
-          </div>
         </div>
 
         {/* Modal de ficha de cargo (Únicamente 3 secciones: Jornada, Problemas, Herramientas) */}
@@ -675,17 +679,17 @@ export const HomeView: React.FC<HomeViewProps> = ({
             aria-labelledby="cargo-modal-titulo"
           >
             <div
-              className="w-full max-w-2xl bg-white rounded-2xl border border-[#E5E7EB] p-6 sm:p-8 shadow-2xl space-y-6 my-auto"
+              className="w-full max-w-2xl bg-white rounded-2xl border border-[#E2E8F0] p-6 sm:p-8 shadow-2xl space-y-6 my-auto"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="flex items-start justify-between gap-4 pb-4 border-b border-[#E5E7EB]">
+              <div className="flex items-start justify-between gap-4 pb-4 border-b border-[#E2E8F0]">
                 <div>
-                  <p className="text-xs font-mono font-semibold uppercase tracking-wider text-slate-500">
+                  <p className="text-xs font-mono font-semibold uppercase tracking-wider text-[#2D6CDF]">
                     Nivel {nivelSeleccionado?.nivel} · {nivelSeleccionado?.titulo}
                   </p>
                   <h3
                     id="cargo-modal-titulo"
-                    className="mt-1 font-serif text-2xl font-semibold text-[#0F172A]"
+                    className="mt-1 font-sans text-2xl font-bold text-[#0F172A]"
                   >
                     {cargoModal.titulo}
                   </h3>
@@ -694,7 +698,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                   type="button"
                   onClick={() => setCargoModal(null)}
                   aria-label="Cerrar ficha del cargo"
-                  className="p-2 rounded-xl text-slate-500 hover:bg-[#EFECE6] hover:text-[#0F172A] transition-colors cursor-pointer"
+                  className="p-2 rounded-xl text-[#64748B] hover:bg-[#F1F5F9] hover:text-[#0F172A] transition-colors cursor-pointer"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -705,10 +709,10 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 <h4 className="text-sm font-semibold text-[#0F172A]">
                   1. ¿Qué hace en su jornada?
                 </h4>
-                <ul className="space-y-2 text-sm text-slate-700 leading-relaxed">
+                <ul className="space-y-2 text-sm text-[#475569] leading-relaxed">
                   {cargoModal.queHaceEnJornada.map((item) => (
                     <li key={item} className="flex items-start gap-2.5">
-                      <span className="text-[#16263B] font-bold mt-0.5">·</span>
+                      <span className="text-[#2D6CDF] font-bold mt-0.5">·</span>
                       <span>{item}</span>
                     </li>
                   ))}
@@ -716,14 +720,14 @@ export const HomeView: React.FC<HomeViewProps> = ({
               </div>
 
               {/* Sección 2: ¿Qué tipo de problemas resuelve? */}
-              <div className="pt-4 border-t border-[#E5E7EB] space-y-2.5">
+              <div className="pt-4 border-t border-[#E2E8F0] space-y-2.5">
                 <h4 className="text-sm font-semibold text-[#0F172A]">
                   2. ¿Qué tipo de problemas resuelve?
                 </h4>
-                <ul className="space-y-2 text-sm text-slate-700 leading-relaxed">
+                <ul className="space-y-2 text-sm text-[#475569] leading-relaxed">
                   {cargoModal.problemasQueResuelve.map((item) => (
                     <li key={item} className="flex items-start gap-2.5">
-                      <span className="text-[#16263B] font-bold mt-0.5">·</span>
+                      <span className="text-[#2D6CDF] font-bold mt-0.5">·</span>
                       <span>{item}</span>
                     </li>
                   ))}
@@ -731,12 +735,12 @@ export const HomeView: React.FC<HomeViewProps> = ({
               </div>
 
               {/* Sección 3 (al final del modal): Herramientas que utiliza */}
-              <div className="pt-4 border-t border-[#E5E7EB] space-y-3">
+              <div className="pt-4 border-t border-[#E2E8F0] space-y-3">
                 <div>
                   <h4 className="text-sm font-semibold text-[#0F172A]">
                     3. Herramientas que utiliza
                   </h4>
-                  <p className="text-xs text-slate-500 mt-0.5">
+                  <p className="text-xs text-[#64748B] mt-0.5">
                     Pasa el cursor o haz clic sobre cada herramienta subrayada para ver su analogía en palabras sencillas.
                   </p>
                 </div>
@@ -744,9 +748,9 @@ export const HomeView: React.FC<HomeViewProps> = ({
                   {cargoModal.herramientas.map((herramienta) => (
                     <li
                       key={`${cargoModal.id}-${herramienta.nombre}`}
-                      className="flex items-start gap-3 rounded-xl bg-[#F9F8F6] border border-[#E5E7EB] p-3.5"
+                      className="flex items-start gap-3 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] p-3.5"
                     >
-                      <span className="w-8 h-8 rounded-lg bg-white border border-[#E5E7EB] flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="w-8 h-8 rounded-lg bg-white border border-[#E2E8F0] flex items-center justify-center shrink-0 mt-0.5">
                         {renderIconoHerramienta(herramienta.icono)}
                       </span>
                       <div className="min-w-0 space-y-0.5">
@@ -758,7 +762,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                             align="left"
                           />
                         </div>
-                        <p className="text-xs text-slate-600 leading-relaxed">
+                        <p className="text-xs text-[#475569] leading-relaxed">
                           {herramienta.resumenUso}
                         </p>
                       </div>
@@ -778,27 +782,27 @@ export const HomeView: React.FC<HomeViewProps> = ({
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12 space-y-8">
       {/* Encabezado de Carreras Universitarias */}
       <section className="space-y-3 max-w-3xl">
-        <p className="text-xs font-mono font-semibold uppercase tracking-wider text-slate-500">
+        <p className="text-xs font-mono font-semibold uppercase tracking-wider text-[#2D6CDF]">
           Carreras universitarias · Exploración por áreas
         </p>
-        <h1 className="font-serif text-3xl sm:text-4xl font-semibold text-[#0F172A] leading-tight tracking-tight">
+        <h1 className="font-sans text-3xl sm:text-4xl font-bold text-[#0F172A] leading-tight tracking-tight">
           Explora carreras universitarias por dentro
         </h1>
-        <p className="text-base text-slate-600 leading-relaxed">
+        <p className="text-base text-[#475569] leading-relaxed">
           Elige una carrera para descubrir de qué trata, sus actividades del día a día, cómo avanza por niveles profesionales y qué retos prácticos puedes experimentar.
         </p>
       </section>
 
       {/* Buscador + Filtros por área */}
-      <section className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 bg-white p-3 rounded-2xl border border-[#E5E7EB]">
+      <section className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 bg-white p-3 rounded-2xl border border-[#E2E8F0]">
         <div className="relative flex-1">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-[#64748B] absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="search"
             value={busqueda}
             onChange={(e) => setBusqueda(e.target.value)}
             placeholder="Buscar carrera, área o reto (ej. Cloud, Datos, Caída a las 8:00 a.m.)..."
-            className="w-full pl-10 pr-4 py-2.5 text-sm bg-[#F9F8F6] border border-[#E5E7EB] rounded-xl text-[#0F172A] placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#16263B]"
+            className="w-full pl-10 pr-4 py-2.5 text-sm bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl text-[#0F172A] placeholder:text-[#64748B] focus:outline-none focus:ring-2 focus:ring-[#2D6CDF]"
           />
         </div>
 
@@ -812,8 +816,8 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 onClick={() => setAreaFiltro(area)}
                 className={`px-3.5 py-2 rounded-xl text-xs font-semibold transition-colors whitespace-nowrap shrink-0 ${
                   activo
-                    ? 'bg-[#16263B] text-white'
-                    : 'bg-[#F9F8F6] text-slate-600 hover:bg-[#EFECE6] hover:text-[#0F172A]'
+                    ? 'bg-[#2D6CDF] text-white'
+                    : 'bg-[#F8FAFC] text-[#475569] hover:bg-[#F1F5F9] hover:text-[#0F172A]'
                 }`}
               >
                 {area}
@@ -826,8 +830,8 @@ export const HomeView: React.FC<HomeViewProps> = ({
       {/* Tarjetas de carreras estilo carpeta/ficha moderna */}
       <section aria-label="Carreras disponibles">
         {carrerasFiltradas.length === 0 ? (
-          <div className="bg-white rounded-2xl border border-[#E5E7EB] p-10 text-center space-y-3">
-            <p className="font-serif text-xl text-[#0F172A]">
+          <div className="bg-white rounded-2xl border border-[#E2E8F0] p-10 text-center space-y-3">
+            <p className="font-sans font-bold text-xl text-[#0F172A]">
               No encontramos carreras que coincidan con “{busqueda}”
             </p>
             <button
@@ -836,7 +840,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 setBusqueda('');
                 setAreaFiltro('Todas');
               }}
-              className="px-4 py-2 rounded-xl text-xs font-semibold bg-[#16263B] text-white hover:bg-[#0F172A]"
+              className="px-4 py-2 rounded-xl text-xs font-semibold bg-[#2D6CDF] text-white hover:bg-[#1D4ED8]"
             >
               Limpiar filtros
             </button>
@@ -848,18 +852,18 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 key={carrera.id}
                 className={`group relative flex flex-col justify-between bg-white rounded-2xl border transition-all ${
                   carrera.activa
-                    ? 'border-[#16263B]/30 shadow-sm hover:shadow-md'
-                    : 'border-[#E5E7EB] opacity-95'
+                    ? 'border-[#2D6CDF]/30 shadow-sm hover:shadow-md'
+                    : 'border-[#E2E8F0] opacity-95'
                 }`}
               >
                 {/* Pestaña superior estilo carpeta */}
-                <div className="px-6 pt-5 pb-3 border-b border-[#E5E7EB] flex items-center justify-between gap-2 bg-[#EFECE6]/55 rounded-t-2xl">
-                  <span className="text-xs font-mono font-medium text-slate-600">
+                <div className="px-6 pt-5 pb-3 border-b border-[#E2E8F0] flex items-center justify-between gap-2 bg-[#EFF6FF]/65 rounded-t-2xl">
+                  <span className="text-xs font-mono font-medium text-[#475569]">
                     0{idx + 1}. {carrera.area}
                   </span>
                   <span
                     className={`text-xs font-semibold ${
-                      carrera.activa ? 'text-emerald-700' : 'text-slate-500'
+                      carrera.activa ? 'text-[#10B981]' : 'text-[#64748B]'
                     }`}
                   >
                     {carrera.activa ? 'Disponible ahora' : 'Vista previa'}
@@ -869,7 +873,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 <div className="p-6 flex-1 flex flex-col justify-between space-y-5">
                   <div className="space-y-3">
                     {carrera.activa && (
-                      <div className="aspect-video w-full rounded-xl overflow-hidden border border-[#E5E7EB] bg-[#EFECE6] mb-3">
+                      <div className="aspect-video w-full rounded-xl overflow-hidden border border-[#E2E8F0] bg-[#F1F5F9] mb-3">
                         <img
                           src={carrera.imagenPortada}
                           alt={carrera.titulo}
@@ -879,11 +883,11 @@ export const HomeView: React.FC<HomeViewProps> = ({
                       </div>
                     )}
 
-                    <h2 className="font-serif text-xl sm:text-2xl font-semibold text-[#0F172A] leading-snug">
+                    <h2 className="font-sans text-xl sm:text-2xl font-bold text-[#0F172A] leading-snug">
                       {carrera.titulo}
                     </h2>
                     
-                    <div className="pt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500">
+                    <div className="pt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-[#64748B]">
                       <span className="inline-flex items-center gap-1">
                         <Clock className="w-3.5 h-3.5" />
                         {carrera.duracionEstimada}
@@ -896,11 +900,11 @@ export const HomeView: React.FC<HomeViewProps> = ({
                     </div>
 
                     {carrera.activa && carrera.retoTitulo && (
-                      <div className="bg-[#F9F8F6] border border-[#E5E7EB] rounded-xl p-3.5">
-                        <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+                      <div className="bg-[#EFF6FF] border border-[#DBEAFE] rounded-xl p-3.5">
+                        <p className="text-[11px] font-semibold uppercase tracking-wider text-[#2D6CDF]">
                           Reto disponible
                         </p>
-                        <p className="text-sm font-semibold text-[#16263B] mt-0.5">
+                        <p className="text-sm font-semibold text-[#0F172A] mt-0.5">
                           “{carrera.retoTitulo}” · EduCloud Live
                         </p>
                       </div>
@@ -912,7 +916,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                       <button
                         type="button"
                         onClick={() => onSeleccionarCarrera(carrera.id)}
-                        className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold bg-[#16263B] text-white hover:bg-[#0F172A] transition-colors whitespace-nowrap cursor-pointer"
+                        className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold bg-[#2D6CDF] text-white hover:bg-[#1D4ED8] transition-colors whitespace-nowrap cursor-pointer"
                       >
                         {tieneProgresoActivo ? 'Explorar carrera y continuar' : 'Explorar carrera'}
                         <ArrowRight className="w-4 h-4" />
@@ -921,7 +925,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                       <button
                         type="button"
                         onClick={() => setCarreraPreviewModal(carrera)}
-                        className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold bg-[#EFECE6] text-[#16263B] hover:bg-[#E5DFD3] transition-colors whitespace-nowrap cursor-pointer"
+                        className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold bg-[#F1F5F9] text-[#1E293B] hover:bg-[#E2E8F0] transition-colors whitespace-nowrap cursor-pointer"
                       >
                         Ver avance
                       </button>
@@ -935,7 +939,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
       </section>
 
       {/* Nota transparente educativa */}
-      <footer className="pt-4 border-t border-[#E5E7EB] flex flex-wrap items-center justify-between gap-4 text-xs text-slate-500">
+      <footer className="pt-4 border-t border-[#E2E8F0] flex flex-wrap items-center justify-between gap-4 text-xs text-[#64748B]">
         <span>
           RoleLab · Escenarios, empresas y perfiles profesionales simulados con fines educativos.
         </span>
@@ -951,15 +955,15 @@ export const HomeView: React.FC<HomeViewProps> = ({
           aria-modal="true"
         >
           <div
-            className="w-full max-w-lg bg-white rounded-2xl border border-[#E5E7EB] p-6 sm:p-7 shadow-xl space-y-5"
+            className="w-full max-w-lg bg-white rounded-2xl border border-[#E2E8F0] p-6 sm:p-7 shadow-xl space-y-5"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-xs font-medium text-slate-500 mb-1">
+                <p className="text-xs font-medium text-[#64748B] mb-1">
                   Próximamente · {carreraPreviewModal.area}
                 </p>
-                <h3 className="font-serif text-2xl font-semibold text-[#0F172A]">
+                <h3 className="font-sans text-2xl font-bold text-[#0F172A]">
                   {carreraPreviewModal.titulo}
                 </h3>
               </div>
@@ -967,24 +971,24 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 type="button"
                 onClick={() => setCarreraPreviewModal(null)}
                 aria-label="Cerrar vista previa"
-                className="p-2 rounded-xl text-slate-500 hover:bg-[#EFECE6]"
+                className="p-2 rounded-xl text-[#64748B] hover:bg-[#F1F5F9]"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <p className="text-sm text-slate-700 leading-relaxed">
+            <p className="text-sm text-[#475569] leading-relaxed">
               {carreraPreviewModal.acercaDe.queTrata}
             </p>
 
-            <div className="bg-[#F9F8F6] rounded-xl p-4 border border-[#E5E7EB] space-y-2">
-              <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+            <div className="bg-[#F8FAFC] rounded-xl p-4 border border-[#E2E8F0] space-y-2">
+              <p className="text-xs font-semibold uppercase tracking-wider text-[#64748B]">
                 Habilidades que pondrás a prueba
               </p>
-              <ul className="space-y-1.5 text-sm text-slate-700">
+              <ul className="space-y-1.5 text-sm text-[#475569]">
                 {carreraPreviewModal.acercaDe.habilidadesClave.map((h) => (
                   <li key={h} className="flex items-start gap-2">
-                    <span className="font-bold text-[#16263B]">·</span>
+                    <span className="font-bold text-[#2D6CDF]">·</span>
                     <span>{h}</span>
                   </li>
                 ))}
@@ -995,7 +999,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
               <button
                 type="button"
                 onClick={() => setCarreraPreviewModal(null)}
-                className="px-4 py-2.5 rounded-xl text-xs font-semibold bg-[#EFECE6] text-[#0F172A] hover:bg-[#E5DFD3]"
+                className="px-4 py-2.5 rounded-xl text-xs font-semibold bg-[#F1F5F9] text-[#0F172A] hover:bg-[#E2E8F0]"
               >
                 Cerrar
               </button>
@@ -1005,7 +1009,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                   setCarreraPreviewModal(null);
                   onSeleccionarCarrera('ingenieria-software-cloud');
                 }}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-semibold bg-[#16263B] text-white hover:bg-[#0F172A]"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-semibold bg-[#2D6CDF] text-white hover:bg-[#1D4ED8]"
               >
                 Probar reto activo ahora
                 <ArrowRight className="w-3.5 h-3.5" />

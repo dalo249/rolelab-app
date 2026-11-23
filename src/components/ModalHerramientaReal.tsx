@@ -211,22 +211,22 @@ export const ModalHerramientaReal: React.FC<ModalHerramientaRealProps> = ({ herr
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-2xl bg-white rounded-2xl border border-[#E5E7EB] shadow-2xl overflow-hidden max-h-[90vh] flex flex-col"
+        className="relative w-full max-w-2xl bg-white rounded-2xl border border-[#E2E8F0] shadow-2xl overflow-hidden max-h-[90vh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-start justify-between gap-4 px-6 py-5 border-b border-[#E5E7EB] bg-[#F9F8F6]">
+        <div className="flex items-start justify-between gap-4 px-6 py-5 border-b border-[#E2E8F0] bg-[#F8FAFC]">
           <div className="flex items-start gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#16263B] text-white flex items-center justify-center shrink-0 mt-0.5">
+            <div className="w-10 h-10 rounded-xl bg-[#2D6CDF] text-white flex items-center justify-center shrink-0 mt-0.5">
               <Icono className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-xs font-medium text-slate-500 mb-0.5">
+              <p className="text-xs font-medium text-[#64748B] mb-0.5">
                 Herramienta real de la industria · {herramienta.categoria}
               </p>
               <h2
                 id="modal-herramienta-titulo"
-                className="font-serif text-2xl font-semibold text-[#0F172A]"
+                className="font-sans text-2xl font-bold text-[#0F172A]"
               >
                 {herramienta.nombre}
               </h2>
@@ -236,7 +236,7 @@ export const ModalHerramientaReal: React.FC<ModalHerramientaRealProps> = ({ herr
             type="button"
             onClick={onClose}
             aria-label="Cerrar ventana"
-            className="p-2 rounded-xl text-slate-500 hover:text-[#0F172A] hover:bg-[#EFECE6] transition-colors"
+            className="p-2 rounded-xl text-[#64748B] hover:text-[#0F172A] hover:bg-[#F1F5F9] transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -245,16 +245,16 @@ export const ModalHerramientaReal: React.FC<ModalHerramientaRealProps> = ({ herr
         {/* Body */}
         <div className="p-6 overflow-y-auto space-y-5">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-[#F9F8F6] rounded-xl p-4 border border-[#E5E7EB]">
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">
+            <div className="bg-[#F8FAFC] rounded-xl p-4 border border-[#E2E8F0]">
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-[#64748B] mb-1.5">
                 Qué hace en una empresa real
               </h3>
-              <p className="text-sm text-slate-700 leading-relaxed">
+              <p className="text-sm text-[#1E293B] leading-relaxed">
                 <TextoConTerminos texto={herramienta.queHaceEnEmpresa} />
               </p>
             </div>
-            <div className="bg-[#EFECE6]/70 rounded-xl p-4 border border-[#E5E7EB]">
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-[#16263B] mb-1.5">
+            <div className="bg-[#EFF6FF] rounded-xl p-4 border border-[#DBEAFE]">
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-[#2D6CDF] mb-1.5">
                 Cómo ayuda en este caso
               </h3>
               <p className="text-sm text-[#0F172A] leading-relaxed">
@@ -264,28 +264,28 @@ export const ModalHerramientaReal: React.FC<ModalHerramientaRealProps> = ({ herr
           </div>
 
           {/* Interactive Carousel */}
-          <div className="border border-[#E5E7EB] rounded-2xl p-4 bg-white">
+          <div className="border border-[#E2E8F0] rounded-2xl p-4 bg-white">
             <div className="flex items-center justify-between gap-2 mb-3">
               <div>
                 <h3 className="text-sm font-semibold text-[#0F172A]">{slideActual.titulo}</h3>
-                <p className="text-xs text-slate-500">{slideActual.subtitulo}</p>
+                <p className="text-xs text-[#64748B]">{slideActual.subtitulo}</p>
               </div>
-              <span className="text-xs font-mono tabular-nums text-slate-500 shrink-0">
+              <span className="text-xs font-mono tabular-nums text-[#64748B] shrink-0">
                 {slideIdx + 1} / {slides.length}
               </span>
             </div>
 
             <SlideVisualTelemetry tipo={slideActual.tipoVisual} />
 
-            <p className="mt-3 text-xs text-slate-600 leading-relaxed">
+            <p className="mt-3 text-xs text-[#475569] leading-relaxed">
               <TextoConTerminos texto={slideActual.leyenda} />
             </p>
 
-            <div className="flex items-center justify-between gap-3 mt-4 pt-3 border-t border-[#E5E7EB]">
+            <div className="flex items-center justify-between gap-3 mt-4 pt-3 border-t border-[#E2E8F0]">
               <button
                 type="button"
                 onClick={() => setSlideIdx((prev) => (prev - 1 + slides.length) % slides.length)}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-[#16263B] text-white hover:bg-[#0F172A] transition-colors whitespace-nowrap"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-[#2D6CDF] text-white hover:bg-[#1D4ED8] transition-colors whitespace-nowrap"
               >
                 <ChevronLeft className="w-4 h-4" />
                 Anterior
@@ -299,7 +299,7 @@ export const ModalHerramientaReal: React.FC<ModalHerramientaRealProps> = ({ herr
                     onClick={() => setSlideIdx(idx)}
                     aria-label={`Ver vista ${idx + 1}`}
                     className={`h-2 rounded-full transition-all ${
-                      idx === slideIdx ? 'w-6 bg-[#16263B]' : 'w-2 bg-slate-300 hover:bg-slate-400'
+                      idx === slideIdx ? 'w-6 bg-[#2D6CDF]' : 'w-2 bg-slate-300 hover:bg-slate-400'
                     }`}
                   />
                 ))}
@@ -308,7 +308,7 @@ export const ModalHerramientaReal: React.FC<ModalHerramientaRealProps> = ({ herr
               <button
                 type="button"
                 onClick={() => setSlideIdx((prev) => (prev + 1) % slides.length)}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-[#16263B] text-white hover:bg-[#0F172A] transition-colors whitespace-nowrap"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-[#2D6CDF] text-white hover:bg-[#1D4ED8] transition-colors whitespace-nowrap"
               >
                 Siguiente
                 <ChevronRight className="w-4 h-4" />
@@ -318,12 +318,12 @@ export const ModalHerramientaReal: React.FC<ModalHerramientaRealProps> = ({ herr
         </div>
 
         {/* Footer */}
-        <div className="flex flex-wrap items-center justify-between gap-3 px-6 py-4 border-t border-[#E5E7EB] bg-[#F9F8F6]">
+        <div className="flex flex-wrap items-center justify-between gap-3 px-6 py-4 border-t border-[#E2E8F0] bg-[#F8FAFC]">
           <a
             href={herramienta.documentacionUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-[#16263B] hover:underline"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-[#2D6CDF] hover:text-[#1D4ED8] hover:underline"
           >
             {herramienta.documentacionLabel}
             <ExternalLink className="w-4 h-4" />
@@ -331,7 +331,7 @@ export const ModalHerramientaReal: React.FC<ModalHerramientaRealProps> = ({ herr
           <button
             type="button"
             onClick={onClose}
-            className="px-5 py-2 rounded-xl text-sm font-semibold bg-[#16263B] text-white hover:bg-[#0F172A] transition-colors whitespace-nowrap"
+            className="px-5 py-2 rounded-xl text-sm font-semibold bg-[#2D6CDF] text-white hover:bg-[#1D4ED8] transition-colors whitespace-nowrap"
           >
             Volver al laboratorio
           </button>

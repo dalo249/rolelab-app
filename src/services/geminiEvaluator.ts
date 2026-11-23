@@ -74,6 +74,33 @@ const RESPONSE_SCHEMA_REST = {
         required: ['nombre', 'puntaje', 'nivel', 'queSignifica', 'queHiciste', 'microReto'],
       },
     },
+    vidaReal: {
+      type: 'OBJECT',
+      properties: {
+        queSeHace: { type: 'ARRAY', items: { type: 'STRING' } },
+        ladoNoGlamoroso: { type: 'ARRAY', items: { type: 'STRING' } },
+        conQuienesColaboras: {
+          type: 'ARRAY',
+          items: {
+            type: 'OBJECT',
+            properties: {
+              rol: { type: 'STRING' },
+              paraQue: { type: 'STRING' },
+            },
+            required: ['rol', 'paraQue'],
+          },
+        },
+      },
+      required: ['queSeHace', 'ladoNoGlamoroso', 'conQuienesColaboras'],
+    },
+    brujulaAfinidad: {
+      type: 'OBJECT',
+      properties: {
+        teGustaraSi: { type: 'ARRAY', items: { type: 'STRING' } },
+        exploraOtrasSi: { type: 'ARRAY', items: { type: 'STRING' } },
+      },
+      required: ['teGustaraSi', 'exploraOtrasSi'],
+    },
     rolesAfines: {
       type: 'ARRAY',
       items: {
@@ -93,6 +120,8 @@ const RESPONSE_SCHEMA_REST = {
     'oportunidadesMejora',
     'criterioYComunicacion',
     'habilidades',
+    'vidaReal',
+    'brujulaAfinidad',
     'rolesAfines',
   ],
 };
@@ -101,15 +130,17 @@ function construirSystemInstruction(reto: Reto): string {
   return `${reto.perfilProfesionalDefinido}
 
 AUDIENCIA Y ESTILO DE COMUNICACIÓN (OBLIGATORIO):
-- Hablas de tú con un estudiante de colegio (16 años, 10.º u 11.º grado) que nunca ha trabajado ni programado antes.
-- Usa español cotidiano, claro y cercano, con frases cortas (máximo 2–3 líneas por tarjeta).
-- Traduce cualquier palabra técnica a lenguaje diario (por ejemplo: "tiempo de espera al cargar" en lugar de "latencia", "ventanillas ocupadas" en lugar de "pool", "copia rápida" en lugar de "caché") y explica siempre qué siente el estudiante que usa EduCloud Live.
-- Cero tono de regaño: distingue con amabilidad un "error_simulacion" (tropiezo normal practicando) de un "area_por_fortalecer" (algo que faltó explicar o conectar).
-- SINCERIDAD ANTE RESPUESTAS VACÍAS O INCOMPLETAS: Si una respuesta es muy corta o no menciona un dato, dilo con respeto y claridad sin inventar ideas que no escribió.`;
+- Hablas de tú con un estudiante de colegio (16 a 18 años, 10.º u 11.º grado) sin experiencia previa en programación.
+- Usa español cotidiano, directo y cercano, con frases breves (1–2 líneas por tarjeta/punto, sin muros de texto).
+- Traduce cualquier palabra técnica a lenguaje diario ("tiempo de respuesta" en lugar de "latencia", "ventanillas ocupadas" en lugar de "pool", "copia lista de asistencia" en lugar de "caché") y conecta siempre con lo que vive el estudiante.
+- Cero tono de regaño: distingue con respeto un "error_simulacion" (tropiezo practicando) de un "area_por_fortalecer" (algo que faltó explicar).
+- FIDELIDAD ESTRICTA: Cada afirmación debe salir de lo que eligió o escribió hoy. Si algo quedó vacío, vago o incompleto, dilo con sinceridad sin inventar aciertos.`;
 }
 
 function construirContentsPrompt(payload: EvaluacionPayload): string {
   const { reto, metricasActuales, historialErrores, propuestaFinal } = payload;
+  const entranDe100 = Math.max(0, Math.min(100, Math.round(metricasActuales.disponibilidad)));
+  const tiempoSegundos = (metricasActuales.latenciaMs / 1000).toFixed(1);
 
   const erroresTexto =
     historialErrores.length === 0
@@ -126,10 +157,9 @@ SOLUCIÓN DE REFERENCIA DEL CASO:
 ${reto.solucionReferenciaProfesional}
 
 === LO QUE HIZO REALMENTE EL ESTUDIANTE EN ESTA SESIÓN ===
-Resultados finales en el simulador:
-- Estudiantes que pueden entrar: ${metricasActuales.disponibilidad}% (meta >= 95%)
-- Tiempo de carga de la página: ${metricasActuales.latenciaMs} ms (meta < 400 ms)
-- Gasto mensual en servidores: $${metricasActuales.presupuestoUsd} USD de $${metricasActuales.presupuestoLimiteUsd} USD
+Indicadores finales de EduCloud Live:
+- Entran sin error: ${entranDe100} de cada 100 estudiantes (meta >= 95 de cada 100)
+- Tiempo de respuesta: ${tiempoSegundos} s (meta < 0.4 s)
 
 Tropiezos durante los 3 pasos de práctica:
 ${erroresTexto}
@@ -139,34 +169,43 @@ Elecciones del Paso 3A:
 - Sacrificio consciente elegido: "${propuestaFinal.tradeOffTexto || '(Sin seleccionar)'}"
 
 Respuestas escritas del Paso 3B:
-1. Qué causó la caída y qué 2 pruebas vio:
+1. Qué causó la caída y qué 2 datos lo demuestran:
 "${propuestaFinal.problemaYEvidencias.trim() || '(Sin respuesta)'}"
 
-2. Qué haría primero, qué comprobaría después y por qué:
+2. Qué haría primero, qué revisaría después y qué arreglaría al final:
 "${propuestaFinal.recomendacionYOrden.trim() || '(Sin respuesta)'}"
 
-3. Riesgo, cuidado de datos y dónde puede fallar una IA:
+3. Qué molestia acepta hoy, cómo protege los datos y cómo fallaría una IA:
 "${propuestaFinal.riesgoCalidadYLimitesIA.trim() || '(Sin respuesta)'}"
 
 === INSTRUCCIONES ESTRICTAS PARA EL JSON DE SALIDA ===
-1. "resumenGeneral": 2 oraciones breves, cercanas y honestas resumiendo cómo le fue en este reto.
-2. "coincidencias": 2-4 aciertos reales y comprobables en lo que hizo o escribió (en lenguaje sencillo).
-3. "efectoDomino": 3-4 tarjetas mostrando reacciones en cadena dentro de EduCloud Live (Estudiantes en clase, Soporte / Carlos Ruiz, Archivo de datos / Sofía Torres, Presupuesto). Explica en palabras simples qué sienten las personas al instante vs. qué pasa en el sistema o el dinero.
-4. "oportunidadesMejora": 2-4 tarjetas constructivas. Usa tipo="error_simulacion" para tropiezos de práctica o tipo="area_por_fortalecer" si faltó explicar algo en su texto. En cada una sé breve: quePaso, porQueImporta (con ejemplo cotidiano) y comoMejorarlo (qué dato concreto mirar).
-5. "criterioYComunicacion": Evaluación honesta, cercana y corta de cómo explicó sus ideas; si algo quedó vago o faltó, dilo con amabilidad sin inventar.
-6. "habilidades": Exactamente estas 4 habilidades en este orden:
-   - "Diagnóstico con evidencia"
-   - "Manejo de fallas bajo presión"
-   - "Balance entre rapidez, datos y costo"
-   - "Comunicación clara con el equipo"
-   Para cada una incluye puntaje (0-100), nivel ("En desarrollo" | "Sólido" | "Destacado"), queSignifica (explicado para alguien de 16 años sin experiencia previa), queHiciste (hecho real de esta partida) y microReto (1 consejo corto y práctico para su próximo intento).
-7. "rolesAfines": 3 roles o carreras afines explicadas sin jerga para un estudiante de 16 años, manteniendo qué hace realmente cada rol en la industria.
+1. "resumenGeneral": Máximo 2 oraciones breves y honestas resumiendo lo logrado hoy según la evidencia real.
+2. "coincidencias": 2 a 3 puntos cortos y concretos sobre lo correcto en esta sesión (sin inventar si faltaron datos).
+3. "oportunidadesMejora": 2 a 3 tarjetas breves y constructivas (tipo="error_simulacion" o "area_por_fortalecer") con un título corto, qué pasó, por qué importa y una acción concreta para la próxima vez.
+4. "criterioYComunicacion": Máximo 2 oraciones honestas evaluando la claridad de su plan y si usó cifras reales; si dejó algo vago o vacío, indícalo con respeto.
+5. "habilidades": Exactamente estas 4 habilidades en lenguaje cotidiano (sin jerga):
+   - "Detectar el problema con pruebas"
+   - "Mantener la calma bajo presión"
+   - "Equilibrar rapidez y datos seguros"
+   - "Explicar el plan con claridad"
+   Para cada una: puntaje (0-100 según evidencia real), nivel, queSignifica (1 oración simple), queHiciste (1 oración factual de hoy) y microReto (1 consejo práctico corto).
+6. "efectoDomino": 3 tarjetas cortas sobre cómo sintieron sus decisiones los estudiantes, el equipo de soporte y el sistema.
+7. "vidaReal": Explica cómo es este trabajo en la vida real:
+   - "queSeHace": 4 puntos cortos (leer métricas/registros, hablar con soporte o producto, decidir sin tener todos los datos, probar cambios y documentar).
+   - "ladoNoGlamoroso": 3 puntos cortos (presión en hora pico, revisar detalles repetitivos, tiempo paciente de pruebas).
+   - "conQuienesColaboras": 4 tarjetas cortas (Soporte, Backend, QA / Calidad, Producto / Liderazgo).
+8. "brujulaAfinidad":
+   - "teGustaraSi": 3 frases cortas para "Probablemente te guste si...".
+   - "exploraOtrasSi": 3 frases cortas para "Quizás prefieras explorar otras áreas si...".
+9. "rolesAfines": 3 caminos o roles afines explicados en palabras simples para jóvenes de 16–18 años.
 `.trim();
 }
 
 function esEvaluacionValida(data: unknown): data is Omit<EvaluacionIA, 'origen' | 'modeloUsado' | 'generadaEn'> {
   if (!data || typeof data !== 'object') return false;
   const d = data as Record<string, unknown>;
+  const vidaReal = d.vidaReal as Record<string, unknown> | undefined;
+  const brujula = d.brujulaAfinidad as Record<string, unknown> | undefined;
   return (
     typeof d.resumenGeneral === 'string' &&
     Array.isArray(d.coincidencias) &&
@@ -175,6 +214,17 @@ function esEvaluacionValida(data: unknown): data is Omit<EvaluacionIA, 'origen' 
     typeof d.criterioYComunicacion === 'string' &&
     Array.isArray(d.habilidades) &&
     d.habilidades.length > 0 &&
+    Boolean(
+      vidaReal &&
+        Array.isArray(vidaReal.queSeHace) &&
+        Array.isArray(vidaReal.ladoNoGlamoroso) &&
+        Array.isArray(vidaReal.conQuienesColaboras)
+    ) &&
+    Boolean(
+      brujula &&
+        Array.isArray(brujula.teGustaraSi) &&
+        Array.isArray(brujula.exploraOtrasSi)
+    ) &&
     Array.isArray(d.rolesAfines) &&
     d.rolesAfines.length > 0
   );

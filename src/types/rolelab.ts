@@ -281,6 +281,18 @@ export interface EvaluacionIA {
   oportunidadesMejora: OportunidadMejoraItem[];
   criterioYComunicacion: string;
   habilidades: HabilidadEvaluada[];
+  vidaReal: {
+    queSeHace: string[];
+    ladoNoGlamoroso: string[];
+    conQuienesColaboras: {
+      rol: string;
+      paraQue: string;
+    }[];
+  };
+  brujulaAfinidad: {
+    teGustaraSi: string[];
+    exploraOtrasSi: string[];
+  };
   rolesAfines: {
     rol: string;
     razon: string;
